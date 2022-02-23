@@ -1,0 +1,31 @@
+body{
+        
+    background-image: url(https://www.careersbox.co.uk/wp-content/uploads/2016/09/kirkherbstreit.jpg);
+    background-repeat: repeat-y; 
+    background-size: cover;
+    
+}
+
+.noticiamarco{
+    border-left: 6px solid;
+    border-right: 6px solid;
+    border-color: #ffb84d;
+    background-color: rgba(255, 255, 255, .7);
+    margin-left: 300px;
+    margin-right: 300px;
+    
+}
+
+
+
+
+@media screen and (max-width: 850px){
+    .noticiamarco{
+        border-left: 6px solid;
+        border-color: #ffb84d;
+        background-color: rgba(255, 255, 255, .5);
+        margin-left: 20px;
+        margin-right: 20px;
+        
+    }
+}
