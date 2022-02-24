@@ -3,3 +3,26 @@ body{
     background-repeat: repeat-y;
     background-size: cover;
 }
+
+
+.img-container{
+    padding-top: 50px;
+    padding-left: 50px;
+    padding-right: 50px;
+    position: relative;
+}
+
+.card>a{
+    text-decoration: none;
+    color: black;
+}
+
+.carousel img{
+    object-fit: cover;
+    max-height: 420px;
+    
+}
+
+.card-deck{
+    margin-top: 50px;
+}
