@@ -8,7 +8,7 @@ if (isset($_POST['loginBtn'])) {
 
     $login = new UsersContr();
     $userInfo = $login->validateUser();
-    if ($userInfo) {
+    if ($userInfo and $userInfo[0]['active']==1) {
 
         $_SESSION['email'] = $_POST['emailLogin'];
         $_SESSION['tipo'] = $userInfo[0]['userType'];

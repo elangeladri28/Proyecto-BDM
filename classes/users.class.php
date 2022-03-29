@@ -40,7 +40,7 @@ class Users extends Dbh
     protected function delUser($Email)
     {
 
-        $sql = "DELETE FROM usuario WHERE Email = ?";
+        $sql = "CALL deleteUser(?)";
         $stmt = $this->connect()->prepare($sql);
         $stmt->execute([$Email]);
     }

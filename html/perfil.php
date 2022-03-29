@@ -145,31 +145,31 @@
                   <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                     <div class="form-group">
                       <label for="fullName">Nombre</label>
-                      <input type="text" class="form-control" id="userName" name="nameEditProfile" placeholder="Ingrese su nombre" value="' . $userData[0]['name'] . '">
+                      <input type="text" class="form-control" id="userName" name="nameEditProfile" placeholder="Nombre" value="' . $userData[0]['name'] . '" required>
                     </div>
                   </div>
                   <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                     <div class="form-group">
                       <label for="fullName">Apellido paterno</label>
-                      <input type="text" class="form-control" id="userName" name="lastname1EditProfile" placeholder="Ingrese su nombre" value="' . $userData[0]['lastname1'] . '">
+                      <input type="text" class="form-control" id="userName" name="lastname1EditProfile" placeholder="Apellido paterno" value="' . $userData[0]['lastname1'] . '" required>
                     </div>
                   </div>
                   <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                     <div class="form-group">
                       <label for="fullName">Apellido materno</label>
-                      <input type="text" class="form-control" id="userName" name="lastname2EditProfile" placeholder="Ingrese su nombre" value="' . $userData[0]['lastname2'] . '">
+                      <input type="text" class="form-control" id="userName" name="lastname2EditProfile" placeholder="Apellido materno" value="' . $userData[0]['lastname2'] . '" required>
                     </div>
                   </div>
                   <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                     <div class="form-group">
                       <label for="eMail">Correo electrónico</label>
-                      <input type="email" class="form-control" id="eMail" name="userEmailEditProfile" placeholder="Ingrese su correo" value="'. $userData[0]['userEmail'] . '" disabled>
+                      <input type="email" class="form-control" id="eMail" name="userEmailEditProfile" placeholder="Correo electrónico" value="'. $userData[0]['userEmail'] . '" disabled>
                     </div>
                   </div>
                   <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                     <div class="form-group">
                       <label for="fullName">Teléfono</label>
-                      <input type="text" class="form-control" id="userName" name="phoneEditProfile" placeholder="Ingrese su nombre" value="' . $userData[0]['phone'] . '">
+                      <input type="text" class="form-control" id="userName" name="phoneEditProfile" placeholder="Teléfono" value="' . $userData[0]['phone'] . '">
                     </div>
                   </div>
                   <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
@@ -182,7 +182,7 @@
                   <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                     <div class="form-group">
                       <label for="pass">Contraseña</label>
-                      <input type="password" class="form-control" id="contra" name="userPassEditProfile" placeholder="Ingrese la contraseña" value="'. $userData[0]['userPass'] . '">
+                      <input type="password" class="form-control" id="contra" name="userPassEditProfile" placeholder="Contraseña" value="'. $userData[0]['userPass'] . '"required>
                     </div>
                   </div>
 
@@ -331,8 +331,30 @@
 
   <!--BOTONES PARA EL HISTORIAL-->
   <!--<a href="historial_Cursos.php" style="margin-left:  500px; margin-bottom: 10px;" class="btn btn-secondary">Historial de cursos</a>-->
-  <button class="btn btn-secondary" data-toggle="modal" data-target="#myModal" style="margin-left:  500px; margin-bottom: 10px; background-color: red;">Eliminar perfil</button>
+  <?php
+    if($userData[0]['userType']==3){
+      echo "<button class='btn btn-secondary' data-toggle='modal' data-target='#deleteOwnUser' style='margin-left:  500px; margin-bottom: 10px; background-color: red;'>Eliminar perfil</button>";
+    }
+  ?>
   <br>
+
+  <form method="POST" action="../includes/deleteuser.inc.php" class="modal fade" id="deleteOwnUser" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+          <div class="modal-content">
+              <div class="modal-body">
+                  <form>
+                      <div class="form-group">
+                          <p>¿Estás segur@ que quieres eliminar este perfil?</p>
+                      </div>
+                  </form>
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                  <button type="submit" class="btn btn-primary" name="loginBtn">Eliminar perfil</button>
+              </div>
+          </div>
+      </div>
+  </form>
 </body>
 
 <script src="../js/navbar.js"></script>
