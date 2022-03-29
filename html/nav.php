@@ -1,4 +1,6 @@
-
+<?php
+session_start();
+?>
 <script src="https://kit.fontawesome.com/6dcab8938d.js" crossorigin="anonymous"></script>
 
 <style>
@@ -22,7 +24,7 @@
   </style>
 
     <nav  class="navbar sticky-top navbar-expand-lg navbar-light shadow p-2 mb-4" style="background-color: #ffb84d;">
-        <a class="navbar-brand" href="indexbootstrap.html"> <img
+        <a class="navbar-brand" href="index.html"> <img
                 src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Sport_balls.svg/1200px-Sport_balls.svg.png"
                 width="30" height="30" class="d-inline-block align-top" alt="" loading="lazy">
             SportCity</a>
@@ -75,8 +77,18 @@
                 <button class="btn btn-success my-2 my-sm-0" type="submit"><img
                         src="https://www.seekpng.com/png/full/920-9209972_magnifying-glass-png-white-search-icon-white-png.png"
                         width="20" height="20" alt=""></button>
-                <a href="Pruebalogin.html" class="btn " role="button"
-                    style="margin-left: 10px; background-color: #ffb84d; color: black;">Acceder</a>
+                <!--<a href="login.html" class="btn " role="button"
+                    style="margin-left: 10px; background-color: #ffb84d; color: black;">Acceder</a>-->
+                
+                <?php
+                if (!isset($_SESSION['email'])) {
+
+                    echo "<a href='login.html' class='btn' role='button' style='margin-left: 10px; background-color: #ffb84d; color: black;'>Acceder</a>";
+                } else {
+                    echo "<a href='perfil.php' class='btn' style='margin-left: 10px; background-color: #ffb84d; color: black;'>Perfil</a>";
+                    echo "<a href='../includes/logout.inc.php' class='btn' name='logoutBtn' style='margin-left: 10px; background-color: #ffb84d; color: black;'>Cerrar Sesión</a>";
+                }
+                ?>
 
                 <div class="media" style="margin-left: 10px;">
 
