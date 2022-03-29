@@ -1,5 +1,6 @@
 body{
-    background-image: url(https://images.pexels.com/photos/3756042/pexels-photo-3756042.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940);
+    /*background-image: url(https://images.pexels.com/photos/3756042/pexels-photo-3756042.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940);*/
+    background-image: url(https://www.womensportaustralia.com.au/wp-content/uploads/2019/05/screen-shot-2019-04-03-at-1-12-27-pm-copy-2@2x-1.png);
     background-repeat: repeat-y; 
     background-size: cover;
 }
@@ -13,4 +14,10 @@ h1{
 .form-group{
     margin-left:24%;
         width: 50%;
+}
+
+.signInError{
+    color: #ff3860;
+    font-size: 11px;
+    height: 13px;
 }

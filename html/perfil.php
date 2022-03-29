@@ -20,7 +20,7 @@
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-  <link rel="stylesheet" href="perfil.css">
+  <link rel="stylesheet" href="../css/modsperfil.css">
   <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,500&display=swap" rel="stylesheet">
 
@@ -118,7 +118,7 @@
       }
     });
   </script>
-
+  <script defer src="../js/edituser.script.js"></script>
 
 </head>
 
@@ -132,7 +132,7 @@
   <?php
 
   echo '
-    <form action="../includes/editProfile.inc.php" method="post" enctype="multipart/form-data">
+    <form id="editUserForm" action="../includes/editProfile.inc.php" method="post" enctype="multipart/form-data">
       <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
           <div class="modal-content">
@@ -145,31 +145,36 @@
                   <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                     <div class="form-group">
                       <label for="fullName">Nombre</label>
-                      <input type="text" class="form-control" id="userName" name="nameEditProfile" placeholder="Nombre" value="' . $userData[0]['name'] . '" required>
+                      <input type="text" class="form-control" id="nameEditUser" name="nameEditProfile" placeholder="Nombre" value="' . $userData[0]['name'] . '" required>
+                      <div id="editUserNameError" class ="editUserError"></div>
                     </div>
                   </div>
                   <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                     <div class="form-group">
                       <label for="fullName">Apellido paterno</label>
-                      <input type="text" class="form-control" id="userName" name="lastname1EditProfile" placeholder="Apellido paterno" value="' . $userData[0]['lastname1'] . '" required>
+                      <input type="text" class="form-control" id="lastname1EditUser" name="lastname1EditProfile" placeholder="Apellido paterno" value="' . $userData[0]['lastname1'] . '" required>
+                      <div id="editUserLastName1Error" class ="editUserError"></div>
                     </div>
                   </div>
                   <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                     <div class="form-group">
                       <label for="fullName">Apellido materno</label>
-                      <input type="text" class="form-control" id="userName" name="lastname2EditProfile" placeholder="Apellido materno" value="' . $userData[0]['lastname2'] . '" required>
+                      <input type="text" class="form-control" id="lastname2EditUser" name="lastname2EditProfile" placeholder="Apellido materno" value="' . $userData[0]['lastname2'] . '" required>
+                      <div id="editUserLastName2Error" class ="editUserError"></div>
                     </div>
                   </div>
                   <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                     <div class="form-group">
                       <label for="eMail">Correo electrónico</label>
-                      <input type="email" class="form-control" id="eMail" name="userEmailEditProfile" placeholder="Correo electrónico" value="'. $userData[0]['userEmail'] . '" disabled>
+                      <input type="email" class="form-control" id="emailEditUser" name="userEmailEditProfile" placeholder="Correo electrónico" value="'. $userData[0]['userEmail'] . '" disabled>
+                      <div id="editUserUserEmailError" class ="editUserError"></div>
                     </div>
                   </div>
                   <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                     <div class="form-group">
                       <label for="fullName">Teléfono</label>
-                      <input type="text" class="form-control" id="userName" name="phoneEditProfile" placeholder="Teléfono" value="' . $userData[0]['phone'] . '">
+                      <input type="text" class="form-control" id="phoneEditUser" name="phoneEditProfile" placeholder="Teléfono" value="' . $userData[0]['phone'] . '">
+                      <div id="editUserPhoneError" class ="editUserError"></div>
                     </div>
                   </div>
                   <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
@@ -182,7 +187,8 @@
                   <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                     <div class="form-group">
                       <label for="pass">Contraseña</label>
-                      <input type="password" class="form-control" id="contra" name="userPassEditProfile" placeholder="Contraseña" value="'. $userData[0]['userPass'] . '"required>
+                      <input type="password" class="form-control" id="passEditUser" name="userPassEditProfile" placeholder="Contraseña" value="'. $userData[0]['userPass'] . '"required>
+                      <div id="editUserUserPassError" class ="editUserError"></div>
                     </div>
                   </div>
 
