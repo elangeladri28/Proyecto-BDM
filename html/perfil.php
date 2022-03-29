@@ -23,6 +23,8 @@
   <link rel="stylesheet" href="../css/modsperfil.css">
   <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,500&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" 
+        href="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Sport_balls.svg/1200px-Sport_balls.svg.png" />
 
 
   <script type="text/javascript" src="jquery-3.5.1.min.js"></script>

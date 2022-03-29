@@ -22,6 +22,8 @@ session_start();
     margin-top:13px;
   }
   </style>
+    <link rel="icon" type="image/png" 
+        href="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Sport_balls.svg/1200px-Sport_balls.svg.png" />
 
     <nav  class="navbar sticky-top navbar-expand-lg navbar-light shadow p-2 mb-4" style="background-color: #ffb84d;">
         <a class="navbar-brand" href="index.php"> <img

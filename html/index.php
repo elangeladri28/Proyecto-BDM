@@ -22,7 +22,7 @@
     <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
 
     <link rel="stylesheet" href="../css/modsindex.css" />
-    <link rel="icon" type="image/png"
+    <link rel="icon" type="image/png" 
         href="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Sport_balls.svg/1200px-Sport_balls.svg.png" />
 </head>
 
