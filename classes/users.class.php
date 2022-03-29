@@ -24,19 +24,16 @@ class Users extends Dbh
         return $insertSucc;
     }
 
-    protected function editUser($NombreUsuario, $FotoUsuario, $Email, $Contrasena)
+    protected function editUser($NombreUsuario, $ApPatUsuario, $ApMatUsuario, $telUsuario, $FotoUsuario, $Email, $Contrasena)
     {
-
         if ($FotoUsuario == 0) {
-
-            $sql = "UPDATE usuario SET NombreUsuario = ?, Contrasena = ?, FechaMod = now() WHERE Email = ?";
+            $sql = "CALL editUserWithoutPicture(?,?,?,?,?,?)";
             $stmt = $this->connect()->prepare($sql);
-            $stmt->execute([$NombreUsuario, $Contrasena, $Email]);
+            $stmt->execute([$NombreUsuario, $ApPatUsuario, $ApMatUsuario, $telUsuario, $Contrasena, $Email]);
         } else {
-
-            $sql = "UPDATE usuario SET NombreUsuario = ?, FotoUsuario = ?, Contrasena = ?, FechaMod = now() WHERE Email = ?";
+            $sql = "CALL editUserWithPicture(?,?,?,?,?,?,?)";
             $stmt = $this->connect()->prepare($sql);
-            $stmt->execute([$NombreUsuario, $FotoUsuario, $Contrasena, $Email]);
+            $stmt->execute([$NombreUsuario, $ApPatUsuario, $ApMatUsuario, $telUsuario, $FotoUsuario, $Contrasena, $Email]);
         }
     }
 

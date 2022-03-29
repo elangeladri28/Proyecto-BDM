@@ -24,7 +24,7 @@ session_start();
   </style>
 
     <nav  class="navbar sticky-top navbar-expand-lg navbar-light shadow p-2 mb-4" style="background-color: #ffb84d;">
-        <a class="navbar-brand" href="index.html"> <img
+        <a class="navbar-brand" href="index.php"> <img
                 src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Sport_balls.svg/1200px-Sport_balls.svg.png"
                 width="30" height="30" class="d-inline-block align-top" alt="" loading="lazy">
             SportCity</a>

@@ -23,10 +23,10 @@ class UsersContr extends Users
         $this->delUser($Email);
     }
 
-    public function editProfile($NombreUsuario, $FotoUsuario, $Email, $Contrasena)
+    public function editProfile($NombreUsuario, $ApPatUsuario, $ApMatUsuario, $telUsuario, $FotoUsuario, $Email, $Contrasena)
     {
 
-        $this->editUser($NombreUsuario, $FotoUsuario, $Email, $Contrasena);
+        $this->editUser($NombreUsuario, $ApPatUsuario, $ApMatUsuario, $telUsuario, $FotoUsuario, $Email, $Contrasena);
     }
 
     public function validateUser()
