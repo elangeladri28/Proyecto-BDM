@@ -1,0 +1,27 @@
+body{
+        
+    background-image: url(https://media.istockphoto.com/photos/orange-background-blank-frame-with-copy-space-picture-id1131425887?b=1&k=20&m=1131425887&s=170667a&w=0&h=gEm5E4TeMredIht0MaWhRoed3QRxHSaCfkANqI6E7g4=);
+    background-repeat: repeat-y; 
+    background-size: cover;
+    
+}
+
+/* .carousel img{
+    object-fit: cover;
+    max-height: 600px;
+    
+} */
+
+.card-deck{
+    margin-top: 50px;
+}
+
+.alta-seccion{
+    background-color: rgb(255, 255, 255);
+    padding: 10px ;
+    border-bottom-left-radius: 5%;
+    border-bottom-right-radius: 5%;
+    border-top-left-radius: 5%;
+    border-top-right-radius: 5%;
+   
+}
