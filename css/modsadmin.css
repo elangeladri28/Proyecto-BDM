@@ -19,9 +19,29 @@ body{
 .alta-seccion{
     background-color: rgb(255, 255, 255);
     padding: 10px ;
-    border-bottom-left-radius: 5%;
-    border-bottom-right-radius: 5%;
-    border-top-left-radius: 5%;
-    border-top-right-radius: 5%;
+    border-bottom-left-radius: 2%;
+    border-bottom-right-radius: 2%;
+    border-top-left-radius: 2%;
+    border-top-right-radius: 2%;
    
+}
+
+.ver-seccion{
+    background-color: rgb(255, 255, 255);
+    padding: 10px ;
+    border-bottom-left-radius: 2%;
+    border-bottom-right-radius: 2%;
+    border-top-left-radius: 2%;
+    border-top-right-radius: 2%;
+
+    max-height: 500px;
+    margin-bottom: 100px;
+    overflow:scroll;
+    
+}
+
+
+.botonsillos{
+
+    
 }
