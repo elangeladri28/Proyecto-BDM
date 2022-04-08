@@ -58,8 +58,8 @@ session_start();
                     Administrar Página
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="onlysoccer.html">Publicaciones</a>
-                    <a class="dropdown-item" href="onlybasket.html">Secciones</a>
+                    <a class="dropdown-item" href="../html/adminpage.html">Publicaciones</a>
+                    <a class="dropdown-item" href="../html/secciones.html">Secciones</a>
                     
                    
                 </div>
