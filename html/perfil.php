@@ -4,7 +4,7 @@
 <head>
   <?php
 
-  include '../includes/class-autoload.inc.php';
+  include_once '../includes/class-autoload.inc.php';
   include_once 'nav.php';
 
   $userObjView = new UsersView();
@@ -222,7 +222,7 @@
                 <!--<img src="https://centromedicomontemar.cl/wp-content/uploads/2015/06/sin-perfil.png" alt="Admin"
                   class="rounded-circle" width="150" height="150">-->
                 <?php
-                echo '<img src="data:image;base64,' . base64_encode($userData[0]['picture']) . '"alt="image" class="rounded-circle" width="150" height="150">';
+                echo '<img src="data:image;base64,' . base64_encode($userData[0]['picture']) . '" alt="image" class="rounded-circle" width="150" height="150">';
                 ?>
                 <div class="mt-3">
                   <?php
@@ -307,6 +307,15 @@
                   <?php
                   echo $userData[0]['userCrDate'];
                   ?>
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-sm-3">
+                  <h6 class="mb-0">Autorizado</h6>
+                </div>
+                <div class="col-sm-9 text-secondary">
+                  Sí/No
                 </div>
               </div>
               <!--<div class="row">

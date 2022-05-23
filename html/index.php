@@ -1,3 +1,7 @@
+<?php
+include_once '../includes/class-autoload.inc.php';  //Incluir clases automáticamente
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -85,7 +89,66 @@
 
         <!--Aqui el contenido es debajo del carrusel-->
 
+
+
+
+
+        <div class="container">
+            <div class="row clearfix">
+                <?php
+                    $noticiasObj = new NoticiasView;
+                    $noticiasList = $noticiasObj->showNoticiasRecientes();
+                    foreach ($noticiasList as $noticia) {
+                        $idNoticia = $noticia['newsId'];
+                        $newsImgObj = new NewsImgsView;
+                        $imagenesNoticia = $newsImgObj->showNewsImgByNews($idNoticia);
+                        echo '
+                        <div class="card" style="width:31.33%;margin:1%">
+                            <img src="data:image;base64,' . base64_encode($imagenesNoticia[0]['imageFile']) . '"
+                                class="card-img-top" alt="...">
+                            <div class="card-body">
+                                <h5 class="card-title">' . $noticia['newsTitle'] . '</h5>
+                                <p class="card-text">' . $noticia['newsDescription'] . '</p>
+                            </div>
+                            <!--Botonsote-->
+                            <button type="button" class="btn btn-primary" data-toggle="modal"
+                                data-target="#noticia4">Detalles</button>
+                            <div class="modal fade" id="noticia4" tabindex="-1" aria-labelledby="exampleModalLabel"
+                                aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-scrollable">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            ...
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                            <button type="button" class="btn btn-primary">Ver noticia</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--Botonsote-->
+                            <div class="card-footer">
+                                <small class="text-muted">Sección: </small>
+                            </div>
+                        </div>
+                        ';
+                    }
+                ?>
+            </div>
+        </div>
+
+
+
+
         <!--Aqui empieza el primer card-deck-->
+
         <div class="card-deck">
             <div class="card">
                 <img src="https://www.entrelineas.info/media/cache/pub_news_details_large/media/i/d2be38ece660cd10da650d10e0f8aa27775dc586.jpeg"

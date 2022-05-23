@@ -1,4 +1,5 @@
 <?php
+include_once '../includes/class-autoload.inc.php';  //Incluir clases automáticamente
 session_start();
 ?>
 <script src="https://kit.fontawesome.com/6dcab8938d.js" crossorigin="anonymous"></script>
@@ -35,10 +36,17 @@ session_start();
             <!--Esto es otra seccion del navbar-->
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Deportes
+                    Secciones
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="onlysoccer.html">Futbol Soccer</a>
+                    <?php
+                        $seccionesObj = new SeccionesView();
+                        $seccionesList = $seccionesObj->showSecciones();
+                        foreach ($seccionesList as $seccion) {
+                            echo '<a class="dropdown-item" href="specificSeccion.php?idShowSeccion=' . $seccion['categoryId'] . '">' . $seccion['categoryName'] . '</a>';
+                        }
+                    ?>
+                    <!--<a class="dropdown-item" href="onlysoccer.html">Futbol Soccer</a>
                     <a class="dropdown-item" href="onlybasket.html">Basketball</a>
                     <a class="dropdown-item" href="onlybase.html">Baseball</a>
                     <a class="dropdown-item" href="onlyfootball.html">American Football</a>
@@ -47,7 +55,7 @@ session_start();
                     <a class="dropdown-item" href="onlyjudo.html">Judo</a>
                     <a class="dropdown-item" href="onlygolf.html">Golf</a>
                     <a class="dropdown-item" href="onlyatletismo.html">Atletismo</a>
-                    <a class="dropdown-item" href="onlyciclismo.html">Ciclismo</a>
+                    <a class="dropdown-item" href="onlyciclismo.html">Ciclismo</a>-->
                 </div>
             </li>
 
@@ -59,7 +67,7 @@ session_start();
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <a class="dropdown-item" href="../html/adminpage.html">Publicaciones</a>
-                    <a class="dropdown-item" href="../html/secciones.html">Secciones</a>
+                    <a class="dropdown-item" href="../html/secciones.php">Secciones</a>
                     
                    
                 </div>
@@ -93,4 +101,4 @@ session_start();
         </form>
     </div>
 </nav>
-<a href="" class="añadir-noticia"> <i class="fa-solid fa-plus"></i></a>
+<a href="nuevanoticia.php" class="añadir-noticia"> <i class="fa-solid fa-plus"></i></a>

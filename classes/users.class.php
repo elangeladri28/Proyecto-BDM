@@ -7,9 +7,9 @@ class Users extends Dbh
     protected function getUserByEmail($Email)
     {
 
-        $sql = "CALL getUserByEmail(?)";
+        $sql = "CALL abcUser(?,?,?,?,?,?,?,?,?)";
         $stmt = $this->connect()->prepare($sql);
-        $stmt->execute([$Email]);
+        $stmt->execute(["get",0,0,0,$Email,0,0,0,0]);
 
         $results = $stmt->fetchAll();
         return $results;
@@ -18,31 +18,31 @@ class Users extends Dbh
     protected function setUser($NombreUsuario, $ApPatUsuario, $ApMatUsuario, $Email, $TelUsuario, $Contrasena, $TipoUsuario, $FotoUsuario)
     {
 
-        $sql = "CALL setUser(?,?,?,?,?,?,?,?)";
+        $sql = "CALL abcUser(?,?,?,?,?,?,?,?,?)";
         $stmt = $this->connect()->prepare($sql);
-        $insertSucc = $stmt->execute([$NombreUsuario, $ApPatUsuario, $ApMatUsuario, $Email, $TelUsuario, $Contrasena, $TipoUsuario, $FotoUsuario]);
+        $insertSucc = $stmt->execute(["set",$NombreUsuario, $ApPatUsuario, $ApMatUsuario, $Email, $TelUsuario, $Contrasena, $TipoUsuario, $FotoUsuario]);
         return $insertSucc;
     }
 
     protected function editUser($NombreUsuario, $ApPatUsuario, $ApMatUsuario, $telUsuario, $FotoUsuario, $Email, $Contrasena)
     {
         if ($FotoUsuario == 0) {
-            $sql = "CALL editUserWithoutPicture(?,?,?,?,?,?)";
+            $sql = "CALL abcUser(?,?,?,?,?,?,?,?,?)";
             $stmt = $this->connect()->prepare($sql);
-            $stmt->execute([$NombreUsuario, $ApPatUsuario, $ApMatUsuario, $telUsuario, $Contrasena, $Email]);
+            $stmt->execute(["editNoPic",$NombreUsuario, $ApPatUsuario, $ApMatUsuario, $Email, $telUsuario, $Contrasena,0,0]);
         } else {
-            $sql = "CALL editUserWithPicture(?,?,?,?,?,?,?)";
+            $sql = "CALL abcUser(?,?,?,?,?,?,?,?,?)";
             $stmt = $this->connect()->prepare($sql);
-            $stmt->execute([$NombreUsuario, $ApPatUsuario, $ApMatUsuario, $telUsuario, $FotoUsuario, $Contrasena, $Email]);
+            $stmt->execute(["editPic",$NombreUsuario, $ApPatUsuario, $ApMatUsuario, $Email, $telUsuario, $Contrasena, 0, $FotoUsuario]);
         }
     }
 
     protected function delUser($Email)
     {
 
-        $sql = "CALL deleteUser(?)";
+        $sql = "CALL abcUser(?,?,?,?,?,?,?,?,?)";
         $stmt = $this->connect()->prepare($sql);
-        $stmt->execute([$Email]);
+        $stmt->execute(["delete",0,0,0,$Email,0,0,0,0]);
     }
 
     protected function getAllUsersSchool()

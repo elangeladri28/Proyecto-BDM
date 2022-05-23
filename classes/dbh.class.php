@@ -8,6 +8,10 @@ class Dbh
     private $user = "root";
     private $pwd = "";
     private $dbName = "sportcity_db";
+    /*private $host = "sql102.epizy.com";
+    private $user = "epiz_31772596";
+    private $pwd = "Y1ebcf8Xeo";
+    private $dbName = "epiz_31772596_sportcity_db";*/
 
     protected function connect()
     {

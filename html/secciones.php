@@ -1,3 +1,13 @@
+<?php
+
+include_once '../includes/class-autoload.inc.php';  //Incluir clases automáticamente
+
+if (isset($_GET['seccionId'])) {
+  $seccionObj = new SeccionesView;
+  $seccionInfo = $seccionObj -> showSeccionById($_GET['seccionId']);
+}
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -45,11 +55,11 @@
           </button>
         </div>
         <div class="modal-body">
-          <h4 style="text-align: center;">¿Estás seguro de qué quieres realizar una nueva sección?</h4>
+          <h4 style="text-align: center;">¿Estás seguro de que quieres crear una nueva sección?</h4>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-danger" data-dismiss="modal">No</button>
-          <button type="button" class="btn btn-success" data-dismiss="modal">Si, guardar</button>
+          <button type="button" class="btn btn-success" data-dismiss="modal">Sí, guardar</button>
         </div>
       </div>
     </div>
@@ -66,11 +76,11 @@
           </button>
         </div>
         <div class="modal-body">
-          <h4 style="text-align: center;">¿Estás seguro de qué quieres borrar está sección?</h4>
+          <h4 style="text-align: center;">¿Estás seguro de que quieres borrar esta sección?</h4>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-danger" data-dismiss="modal">No</button>
-          <button type="button" class="btn btn-success" data-dismiss="modal">¡Si, borralo!</button>
+          <button type="button" class="btn btn-success" data-dismiss="modal">Sí, borrar</button>
         </div>
       </div>
     </div>
@@ -117,38 +127,30 @@
   <div class="container">
 
     <div class="row">
-
-
       <div class="col-lg-6">
-
         <div class="alta-seccion">
-
-          <form>
-            <h2 style="text-align: center;">Alta de Sección</h2>
+          <form id="createSeccionForm" method="POST" action="../includes/createSeccion.inc.php" enctype="multipart/form-data">
+            <h2 style="text-align: center;">Agregar Sección</h2>
             <div class="form-group">
-              <label for="exampleFormControlInput1">Nombre del Deporte:</label>
-              <input type="text" class="form-control" id="exampleFormControlInput1">
+              <label for="exampleFormControlInput1">Nombre de Sección:</label>
+              <input type="text" class="form-control" id="exampleFormControlInput1" name="seccionName" required>
             </div>
             <div class="form-group">
               <label for="exampleFormControlInput1">Orden:</label>
-              <input type="number" class="form-control" id="exampleFormControlInput1" placeholder="0">
+              <input type="number" class="form-control" id="exampleFormControlInput1" name="seccionOrden" placeholder="0" required>
             </div>
             <div class="form-group">
               <label for="exampleFormControlFile1">Agrega una imagen:</label>
-              <input type="file" class="form-control-file" id="exampleFormControlFile1">
+              <input type="file" class="form-control-file" id="exampleFormControlFile1" name="seccionImage" required>
             </div>
-            <button type="button" class="btn btn-success btn-lg btn-block" data-toggle="modal"
-              data-target="#ModalGuardarSeccion">Guardar</button>
+            <button type="submit" name="createSeccionBtn" class="btn btn-success btn-lg btn-block">Guardar</button>
           </form>
         </div>
-
       </div>
 
 
       <div class="col-lg-6">
-
         <div class="ver-seccion">
-
           <h2 style="text-align: center;">Secciones</h2>
           <!-- <div class="list-group-scrollable">
                     <button type="button" class="list-group-item list-group-item-action active">
@@ -183,10 +185,21 @@
                   </div> -->
 
           <div class="panel panel-primary" id="result_panel">
-
             <div class="panel-body">
               <ul class="list-group">
-                <li class="list-group-item"><strong>Futbol
+                <?php
+                $seccionesObj = new SeccionesView();
+                $seccionesList = $seccionesObj->showSecciones();
+                foreach ($seccionesList as $seccion) {
+                  echo '<li class="list-group-item"><strong>' . $seccion['categoryName'];
+                  echo '</strong>
+                        <div class="botonsillo">
+                          <a href="secciones.php?seccionId=' . $seccion['categoryId'] . '" class="btn btn-info">Seleccionar Sección</a>
+                        </div>
+                      </li>';       //data-toggle="modal" data-target="#ModalModificarSeccion"
+                }
+                ?>
+                <!--<li class="list-group-item"><strong>Futbol
                   </strong>
                   <div class="botonsillos">
                     <button type="button" class="btn btn-warning" data-toggle="modal"
@@ -255,19 +268,45 @@
                       data-target="#ModalBorrarSeccion">Eliminar</button>
                   </div>
 
-                </li>
-
+                </li>-->
               </ul>
             </div>
           </div>
         </div>
-
       </div>
-
     </div>
-
+    <div class="row" style="margin-top: 40px">
+      <div class="col-lg-6">
+        <div class="alta-seccion">
+          <form id="createSeccionForm" method="POST" action="../includes/editDeleteSeccion.inc.php<?php if (isset($_GET['seccionId'])) {echo "?seccionId=" . $seccionInfo[0]['categoryId'];} ?>" enctype="multipart/form-data">
+            <h2 style="text-align: center;">Modificar o Eliminar Sección</h2>
+            <div class="form-group">
+              <label for="exampleFormControlInput1">Nombre de Sección:</label>
+              <input type="text" class="form-control" id="exampleFormControlInput1" name="editSeccionName" value="<?php if (isset($_GET['seccionId'])) {echo $seccionInfo[0]['categoryName'];} ?>" required>
+            </div>
+            <div class="form-group">
+              <label for="exampleFormControlInput1">Orden:</label>
+              <input type="number" class="form-control" id="exampleFormControlInput1" name="editSeccionOrder" placeholder="0" value="<?php if (isset($_GET['seccionId'])) {echo $seccionInfo[0]['categoryOrder'];} ?>" required>
+            </div>
+            <div class="form-group">
+              <label for="exampleFormControlFile1">Agrega una imagen:</label>
+              <input type="file" class="form-control-file" id="exampleFormControlFile1" name="editSeccionImage">
+            </div>
+            <div class="botonsillos">
+              <button type="submit" class="btn btn-warning" name="editSeccionBtn">Modificar</button>
+              <button type="submit" class="btn btn-danger" name="deleteSeccionBtn">Eliminar</button>
+            </div>
+            <!--<div class="botonsillos">
+              <button type="submit" class="btn btn-warning" data-toggle="modal"
+                data-target="#ModalModificarSeccion">Modificar</button>
+              <button type="submit" class="btn btn-danger" data-toggle="modal"
+                data-target="#ModalBorrarSeccion">Eliminar</button>
+            </div>-->
+          </form>
+        </div>
+      </div>
+    </div>
   </div>
-
   </div>
 
 </body>
