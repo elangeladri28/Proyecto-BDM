@@ -1,7 +1,7 @@
 <?php
 //Controlador para secciones
 
-class SeccionesContr extends Secciones
+class NewsCatsContr extends NewsCats
 {
 
     public function createNewscats($newsRelation, $categoryRelation)
@@ -15,5 +15,10 @@ class SeccionesContr extends Secciones
     {
 
         $this->editNewscats($newsCategoryId, $newsRelation, $categoryRelation);
+    }
+
+    public function deleteNewsCatsByNews($newsId){
+
+        $this->delNewsCatsByNews($newsId);
     }
 }

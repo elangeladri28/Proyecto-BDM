@@ -1,12 +1,26 @@
 <?php
 //Vista para secciones
 
-class SeccionesView extends Secciones
+class NewsCatsView extends NewsCats
 {
     public function showNewscatsById($newsCategoryId)
     {
         
         $results = $this->getNewscatsById($newsCategoryId);
+        return $results;
+    }
+
+    public function showNewscatsByNews($newsId)
+    {
+        
+        $results = $this->getNewscatsByNews($newsId);
+        return $results;
+    }
+
+    public function newsCatExists($newsId,$categoryId)
+    {
+        
+        $results = $this->exists($newsId,$categoryId);
         return $results;
     }
 }

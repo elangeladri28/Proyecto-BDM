@@ -140,8 +140,8 @@ if (isset($_GET['seccionId'])) {
               <input type="number" class="form-control" id="exampleFormControlInput1" name="seccionOrden" placeholder="0" required>
             </div>
             <div class="form-group">
-              <label for="exampleFormControlFile1">Agrega una imagen:</label>
-              <input type="file" class="form-control-file" id="exampleFormControlFile1" name="seccionImage" required>
+              <label for="exampleFormControlFile1">Color de sección:</label>
+              <input type="color" class="form-control" id="exampleFormControlInput1" name="seccionColor" required>
             </div>
             <button type="submit" name="createSeccionBtn" class="btn btn-success btn-lg btn-block">Guardar</button>
           </form>
@@ -290,7 +290,7 @@ if (isset($_GET['seccionId'])) {
             </div>
             <div class="form-group">
               <label for="exampleFormControlFile1">Agrega una imagen:</label>
-              <input type="file" class="form-control-file" id="exampleFormControlFile1" name="editSeccionImage">
+              <input type="color" class="form-control" id="exampleFormControlInput1" name="editSeccionColor" required>
             </div>
             <div class="botonsillos">
               <button type="submit" class="btn btn-warning" name="editSeccionBtn">Modificar</button>

@@ -31,10 +31,7 @@ if (isset($_POST['signinBtn'])) {
     if ($signinSucc) {
         //Mensaje de registro exitoso
     }
-    header("location: ../html/index.php");
-    exit();
 }
-else{
-    header("location: ../html/index.php");
-    exit();
-}
+$_POST = array();
+header("location: ../html/index.php");
+exit();

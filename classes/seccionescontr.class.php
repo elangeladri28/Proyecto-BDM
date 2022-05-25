@@ -4,17 +4,17 @@
 class SeccionesContr extends Secciones
 {
 
-    public function createSeccion($categoryName, $categoryImage, $categoryOrder)
+    public function createSeccion($categoryName, $categoryColor, $categoryOrder)
     {
 
-        $result = $this->setSeccion($categoryName, $categoryImage, $categoryOrder);
+        $result = $this->setSeccion($categoryName, $categoryColor, $categoryOrder);
         return $result;
     }
 
-    public function modifySeccion($categoryId, $categoryName, $categoryImage, $categoryOrder)
+    public function modifySeccion($categoryId, $categoryName, $categoryColor, $categoryOrder)
     {
 
-        $this->editSeccion($categoryId, $categoryName, $categoryImage, $categoryOrder);
+        $this->editSeccion($categoryId, $categoryName, $categoryColor, $categoryOrder);
     }
 
     public function deleteSeccion($seccionId)

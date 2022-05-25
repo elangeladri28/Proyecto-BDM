@@ -19,6 +19,7 @@ if (isset($_POST['loginBtn'])) {
         session_unset();
         session_destroy();
     }
-    header("location: ../html/index.php");
-    exit();
 }
+$_POST = array();
+header("location: ../html/index.php");
+exit();

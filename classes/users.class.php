@@ -15,6 +15,17 @@ class Users extends Dbh
         return $results;
     }
 
+    protected function getReporterosNoAut()
+    {
+
+        $sql = "CALL abcUser(?,?,?,?,?,?,?,?,?)";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->execute(["getRep",0,0,0,0,0,0,0,0]);
+
+        $results = $stmt->fetchAll();
+        return $results;
+    }
+
     protected function setUser($NombreUsuario, $ApPatUsuario, $ApMatUsuario, $Email, $TelUsuario, $Contrasena, $TipoUsuario, $FotoUsuario)
     {
 
@@ -45,23 +56,11 @@ class Users extends Dbh
         $stmt->execute(["delete",0,0,0,$Email,0,0,0,0]);
     }
 
-    protected function getAllUsersSchool()
+    protected function autorizeRep($userEmail)
     {
 
-        $sql = "SELECT Email, NombreUsuario, FotoUsuario, Rol, FechaMod FROM usuario WHERE Rol='Escuela' ORDER BY NombreUsuario";
+        $sql = "CALL abcUser(?,?,?,?,?,?,?,?,?)";
         $stmt = $this->connect()->prepare($sql);
-        $stmt->execute();
-        $results = $stmt->fetchAll();
-        return $results;
-    }
-
-    protected function getContactsChat($Email, $IdCurso){
-
-        $sql = "CALL getContactsChat(?,?)";
-        $stmt = $this->connect()->prepare($sql);
-        $stmt->execute([$Email, $IdCurso]);
-
-        $results = $stmt->fetchAll();
-        return $results;
+        $stmt->execute(["autorize",0,0,0,$userEmail,0,0,0,0]);
     }
 }

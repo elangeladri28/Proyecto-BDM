@@ -23,6 +23,12 @@ class NoticiasContr extends Noticias
         $this->acceptNoticia($newsId);
     }
 
+    public function rejectNoticia($newsId, $editorComment)
+    {
+
+        $this->returnNoticia($newsId, $editorComment);
+    }
+
     public function deleteNoticia($newsId)
     {
 

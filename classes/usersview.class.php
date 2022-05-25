@@ -11,16 +11,10 @@ class UsersView extends Users
         return $results;
     }
 
-    public function showAllUsersSchool()
+    public function showReporterosNoAut()
     {
-
-        $results = $this->getAllUsersSchool();
-        return $results;
-    }
-
-    public function showContactsChat($Email, $IdCurso){
-
-        $results = $this->getContactsChat($Email,$IdCurso);
+        
+        $results = $this->getReporterosNoAut();
         return $results;
     }
 }

@@ -1,6 +1,11 @@
 <?php
 include_once '../includes/class-autoload.inc.php';  //Incluir clases automáticamente
 session_start();
+if (isset($_SESSION['email'])) {
+    $sessionEmail = $_SESSION['email'];
+    $userObj = new UsersView;
+    $userInfo = $userObj->showUserByEmail($sessionEmail);
+}
 ?>
 <script src="https://kit.fontawesome.com/6dcab8938d.js" crossorigin="anonymous"></script>
 
@@ -43,7 +48,7 @@ session_start();
                         $seccionesObj = new SeccionesView();
                         $seccionesList = $seccionesObj->showSecciones();
                         foreach ($seccionesList as $seccion) {
-                            echo '<a class="dropdown-item" href="specificSeccion.php?idShowSeccion=' . $seccion['categoryId'] . '">' . $seccion['categoryName'] . '</a>';
+                            echo '<a class="dropdown-item" href="specificSeccion.php?idShowSeccion=' . $seccion['categoryId'] . '" style="background-color:' . $seccion['categoryColor'] . '">' . $seccion['categoryName'] . '</a>';
                         }
                     ?>
                     <!--<a class="dropdown-item" href="onlysoccer.html">Futbol Soccer</a>
@@ -60,27 +65,66 @@ session_start();
             </li>
 
         
-
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Administrar Página
-                </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="../html/adminpage.html">Publicaciones</a>
-                    <a class="dropdown-item" href="../html/secciones.php">Secciones</a>
+            <?php
+            if (isset($_SESSION['email'])) {
+                if($userInfo[0]['userType']==1){
+                    echo'
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Administrar Página
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="../html/postNoticia.php">Publicaciones</a>
+                            <a class="dropdown-item" href="../html/secciones.php">Secciones</a>
+                            <a class="dropdown-item" href="../html/listaReporteros.php">Reporteros no autorizados</a>
                     
                    
-                </div>
-            </li>
+                        </div>
+                    </li>
+                    ';
+                }
+                elseif($userInfo[0]['userType']==2){
+                    echo'
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Administrar Perfil
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="../html/postNoticia.php?lista=enRedaccion">Noticias en redacción</a>
+                            <a class="dropdown-item" href="../html/postNoticia.php?lista=terminadas">Noticias terminadas</a>
+                            <a class="dropdown-item" href="../html/postNoticia.php?lista=publicadas">Noticias publicadas</a>
+                        </div>
+                    </li>
+                    ';
+                }
+            }
+            ?>
+            
         </ul>
 
-        <form class="form-inline my-2 my-lg-0">
+        <form method="POST" action="resultadoBusqueda.php" class="form-inline my-2 my-lg-0">
+            <a style="margin-right:5px">Desde:</a>
+            <input class="form-control mr-sm-2" type="datetime-local" placeholder="desde" aria-label="Search" name="searchFechaDesde">
+            <a style="margin-right:5px">Hasta:</a>
+            <input class="form-control mr-sm-2" type="datetime-local" placeholder="hasta" aria-label="Search" name="searchFechaHasta">
+            <input class="form-control mr-sm-2" type="search" placeholder="Título/texto" aria-label="Search" name="searchText">
+            <input class="form-control mr-sm-2" type="search" placeholder="Palabra clave" aria-label="Search" name="searchKeyword">
+            <button class="btn btn-success my-2 my-sm-0" type="submit" name="buscarBtn">
+                <img src="https://www.seekpng.com/png/full/920-9209972_magnifying-glass-png-white-search-icon-white-png.png" width="20" height="20" alt=""></button>
+        </form>
+        <!-- <form class="form-inline my-2 my-lg-0">
             <input class="form-control mr-sm-2" type="search" placeholder="Buscar" aria-label="Search">
-            <button class="btn btn-success my-2 my-sm-0" type="submit"><img src="https://www.seekpng.com/png/full/920-9209972_magnifying-glass-png-white-search-icon-white-png.png" width="20" height="20" alt=""></button>
+            <button class="btn btn-success my-2 my-sm-0" type="submit"><img src="https://www.seekpng.com/png/full/920-9209972_magnifying-glass-png-white-search-icon-white-png.png" width="20" height="20" alt=""></button> -->
             <!--<a href="login.html" class="btn " role="button"
                     style="margin-left: 10px; background-color: #ffb84d; color: black;">Acceder</a>-->
 
-            <?php
+            <!--<div class="media" style="margin-left: 10px;">
+                <div class="media-body">
+                    <h5 class="mt-0"></h5>
+                </div>
+            </div>-->
+        <!-- </form> -->
+        <?php
             if (!isset($_SESSION['email'])) {
 
                 echo "<a href='login.html' class='btn' role='button' style='margin-left: 10px; background-color: #ffb84d; color: black;'>Acceder</a>";
@@ -89,16 +133,13 @@ session_start();
                 echo "<a href='../includes/logout.inc.php' class='btn' name='logoutBtn' style='margin-left: 10px; background-color: #ffb84d; color: black;'>Cerrar Sesión</a>";
             }
             ?>
-
-            <div class="media" style="margin-left: 10px;">
-
-
-                <div class="media-body">
-                    <h5 class="mt-0"></h5>
-
-                </div>
-            </div>
-        </form>
     </div>
 </nav>
-<a href="nuevanoticia.php" class="añadir-noticia"> <i class="fa-solid fa-plus"></i></a>
+
+<?php
+if (isset($_SESSION['email'])) {
+    if($userInfo[0]['userType']==2 && $userInfo[0]['autorized']==1){
+        echo '<a href="nuevanoticia.php" class="añadir-noticia"> <i class="fa-solid fa-plus"></i></a>';
+    }
+}
+?>

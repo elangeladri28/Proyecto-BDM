@@ -49,4 +49,10 @@ class UsersContr extends Users
             return false;
         }
     }
+
+    public function autRep($userEmail)
+    {
+
+        $this->autorizeRep($userEmail);
+    }
 }

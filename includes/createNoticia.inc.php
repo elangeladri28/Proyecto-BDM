@@ -24,6 +24,7 @@ if (isset($_POST['createNoticiaBtn'])) {
     $noticiaImg = [];
     $noticiaVid = [];
     $noticiaVidName = [];
+    $idSecciones = [];
 
 
     $i = 0;
@@ -67,6 +68,22 @@ if (isset($_POST['createNoticiaBtn'])) {
     //$lastIndex = count($noticiaVid) - 1;
     //unset($noticiaVid[$lastIndex]);
 
+    /*$i = 0;
+    while(isset($_POST['crearNoticiaSeccion']['value'][$i])){
+        echo $_POST['crearNoticiaSeccion']['value'][$i];
+        if($_POST['crearNoticiaSeccion']['value'][$i] != ''){
+            $idSecciones[$i] = $_POST['crearNoticiaSeccion']['value'][$i];
+        }
+        $i++;
+    }*/
+
+    $i = 0;
+    foreach($_POST['crearNoticiaSeccion'] as $seccionId){
+        $idSecciones[$i] = $seccionId;
+        //echo $seccionId;
+        $i++;
+    }
+
     $nextNoticiaId = $createNoticia->showNextId();
     $nextNoticiaId = $nextNoticiaId[0]['AUTO_INCREMENT'];
     $createNoticiaSucc = $createNoticia->createNoticia($noticiaTitle, $noticiaDesc, $noticiaText, $noticiaCreator, $noticiaStatus, $noticiaPlace, $noticiaDatetime,
@@ -75,6 +92,9 @@ if (isset($_POST['createNoticiaBtn'])) {
         //Agregar Videos e imágenes
         $newsImagesObj = new NewsImgsContr;
         $newsVideosObj = new NewsVidsContr;
+        $newsCatsContr = new NewsCatsContr;
+        $newsCatsView = new NewsCatsView;
+    
         foreach($noticiaImg as $imagen){
             $newsImagesObj->createNewsImg($imagen, $nextNoticiaId, '');
         }
@@ -90,8 +110,12 @@ if (isset($_POST['createNoticiaBtn'])) {
             move_uploaded_file($video, '../' . $destinationPath);
             $newsVideosObj->createNewsVid($destinationPath, $nextNoticiaId, '');
         }
+        foreach($idSecciones as $idSeccion){
+            $newsCatsContr->createNewscats($nextNoticiaId, $idSeccion);
+        }
 
     }
+    $_POST = array();
     header("location: ../html/nuevanoticia.php");
     exit();
 }

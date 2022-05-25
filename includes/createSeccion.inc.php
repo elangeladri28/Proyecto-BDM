@@ -9,17 +9,14 @@ if (isset($_POST['createSeccionBtn'])) {
     $createSeccion = new SeccionesContr();
     $seccionName = $_POST['seccionName'];
     $seccionOrder = $_POST['seccionOrden'];
-    $seccionImage = $_FILES['seccionImage']['tmp_name'];
-    $seccionImage = file_get_contents(addslashes($seccionImage));
+    $seccionColor = $_POST['seccionColor'];
+    //$seccionImage = file_get_contents(addslashes($seccionImage));
 
-    $createSeccionSucc = $createSeccion->createSeccion($seccionName, $seccionImage, $seccionOrder);
+    $createSeccionSucc = $createSeccion->createSeccion($seccionName, $seccionColor, $seccionOrder);
     if ($createSeccionSucc) {
         //Mensaje de registro exitoso
     }
-    header("location: ../html/secciones.php");
-    exit();
 }
-else{
-    header("location: ../html/secciones.php");
-    exit();
-}
+$_POST = array();
+header("location: ../html/secciones.php");
+exit();

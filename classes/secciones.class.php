@@ -15,26 +15,20 @@ class Secciones extends Dbh
         return $results;
     }
 
-    protected function setSeccion($categoryName, $categoryImage, $categoryOrder)
+    protected function setSeccion($categoryName, $categoryColor, $categoryOrder)
     {
 
         $sql = "CALL abcSeccion(?,?,?,?,?,?)";
         $stmt = $this->connect()->prepare($sql);
-        $insertSucc = $stmt->execute(["set", 0, $categoryName, $categoryImage, $categoryOrder, 1]);
+        $insertSucc = $stmt->execute(["set", 0, $categoryName, $categoryColor, $categoryOrder, 1]);
         return $insertSucc;
     }
 
-    protected function editSeccion($categoryId, $categoryName, $categoryImage, $categoryOrder)
+    protected function editSeccion($categoryId, $categoryName, $categoryColor, $categoryOrder)
     {
-        if ($categoryImage == 0) {
-            $sql = "CALL abcSeccion(?,?,?,?,?,?)";
-            $stmt = $this->connect()->prepare($sql);
-            $stmt->execute(["editNoPic",$categoryId,$categoryName,$categoryImage,$categoryOrder,0]);
-        } else {
-            $sql = "CALL abcSeccion(?,?,?,?,?,?)";
-            $stmt = $this->connect()->prepare($sql);
-            $stmt->execute(["editPic",$categoryId, $categoryName, $categoryImage, $categoryOrder, 0]);
-        }
+        $sql = "CALL abcSeccion(?,?,?,?,?,?)";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->execute(["edit",$categoryId, $categoryName, $categoryColor, $categoryOrder, 0]);
     }
 
     protected function delSeccion($seccionId)

@@ -98,49 +98,79 @@ include_once '../includes/class-autoload.inc.php';  //Incluir clases automática
                 <?php
                     $noticiasObj = new NoticiasView;
                     $noticiasList = $noticiasObj->showNoticiasRecientes();
+                    $newsCatsObj = new NewsCatsView;
+                    $seccionObj = new SeccionesView;
                     foreach ($noticiasList as $noticia) {
                         $idNoticia = $noticia['newsId'];
                         $newsImgObj = new NewsImgsView;
                         $imagenesNoticia = $newsImgObj->showNewsImgByNews($idNoticia);
-                        echo '
-                        <div class="card" style="width:31.33%;margin:1%">
-                            <img src="data:image;base64,' . base64_encode($imagenesNoticia[0]['imageFile']) . '"
-                                class="card-img-top" alt="...">
-                            <div class="card-body">
-                                <h5 class="card-title">' . $noticia['newsTitle'] . '</h5>
-                                <p class="card-text">' . $noticia['newsDescription'] . '</p>
-                            </div>
-                            <!--Botonsote-->
-                            <button type="button" class="btn btn-primary" data-toggle="modal"
-                                data-target="#noticia4">Detalles</button>
-                            <div class="modal fade" id="noticia4" tabindex="-1" aria-labelledby="exampleModalLabel"
-                                aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-scrollable">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                        <div class="modal-body">
-                                            ...
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                                            <button type="button" class="btn btn-primary">Ver noticia</button>
-                                        </div>
-                                    </div>
+                        $newsCats = $newsCatsObj->showNewscatsByNews($idNoticia);
+                        $seccionesNoticia = [];
+                        //echo count($seccionesNoticia);
+                        $i=0;
+                        //echo count($newsCats);
+                        //echo $newsCats[0]['newsRelation'];
+                        //echo count($imagenesNoticia);
+                        foreach($newsCats as $newsCat){
+                            $seccionInfo=$seccionObj->showSeccionById($newsCat['categoryRelation']);
+                            $nombreSeccion=$seccionInfo[0]['categoryName'];
+                            $seccionesNoticia[$i]=$nombreSeccion;
+                            //echo $idNoticia;
+                            //echo $nombreSeccion;
+                            //echo $i;
+                            $i++;
+                        }
+                ?>
+                <div class="card" style="width:31.33%;margin:1%">
+                    <img src="data:image;base64,<?php echo base64_encode($imagenesNoticia[0]['imageFile']); ?>"
+                        class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title"> <?php echo $noticia['newsTitle']; ?> </h5>
+                        <p class="card-text"> <?php echo $noticia['newsDescription']; ?> </p>
+                    </div>
+                    <!--Botonsote-->
+                    <a href="noticiaespecifica.php?noticia=<?php echo $noticia['newsId']; ?>" type="button" class="btn btn-primary">Ver Noticia</a>
+                    <div class="modal fade" id="noticia4" tabindex="-1" aria-labelledby="exampleModalLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-scrollable">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    ...
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                    <button type="button" class="btn btn-primary">Ver noticia</button>
                                 </div>
                             </div>
-                            <!--Botonsote-->
-                            <div class="card-footer">
-                                <small class="text-muted">Sección: </small>
-                            </div>
                         </div>
-                        ';
-                    }
-                ?>
+                    </div>
+                    <!--Botonsote-->
+                    <div class="card-footer">
+                        <small class="text-muted">
+
+                        <?php
+                        $i=0;
+                        foreach($seccionesNoticia as $seccionNoticia){
+                            if($i==0){
+                                echo 'Sección: ' . $seccionNoticia;
+                            }
+                            else{
+                                echo ', ' . $seccionNoticia;
+                            }
+                            $i++;
+                        }
+                        ?>
+
+                        </small>
+                    </div>
+                </div>
+                <?php } ?>
             </div>
         </div>
 
@@ -149,7 +179,7 @@ include_once '../includes/class-autoload.inc.php';  //Incluir clases automática
 
         <!--Aqui empieza el primer card-deck-->
 
-        <div class="card-deck">
+        <!-- <div class="card-deck">
             <div class="card">
                 <img src="https://www.entrelineas.info/media/cache/pub_news_details_large/media/i/d2be38ece660cd10da650d10e0f8aa27775dc586.jpeg"
                     class="card-img-top" alt="...">
@@ -157,9 +187,9 @@ include_once '../includes/class-autoload.inc.php';  //Incluir clases automática
                     <h5 class="card-title">RUMBO A TOKIO 2021</h5>
                     <p class="card-text">El ENARD y el Comité Olímpico Argentino eligieron La Costa para la preparación
                         de la selección de Judo, con Paula Pareto.</p>
-                </div>
+                </div> -->
                 <!--Botonsote-->
-                <button type="button" class="btn btn-primary" data-toggle="modal"
+                <!-- <button type="button" class="btn btn-primary" data-toggle="modal"
                     data-target="#noticia4">Detalles</button>
                 <div class="modal fade" id="noticia4" tabindex="-1" aria-labelledby="exampleModalLabel"
                     aria-hidden="true">
@@ -180,9 +210,9 @@ include_once '../includes/class-autoload.inc.php';  //Incluir clases automática
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> -->
                 <!--Botonsote-->
-                <div class="card-footer">
+                <!-- <div class="card-footer">
                     <small class="text-muted">Deporte: Judo</small>
                 </div>
             </div>
@@ -195,9 +225,9 @@ include_once '../includes/class-autoload.inc.php';  //Incluir clases automática
                         coronavirus en la concentración con Portugal. De momento, se perderá el partido
                         que disputará este fin de semana la Juventus contra el Crotone.
                     </p>
-                </div>
+                </div> -->
                 <!--Botonsote-->
-                <button type="button" class="btn btn-primary" data-toggle="modal"
+                <!-- <button type="button" class="btn btn-primary" data-toggle="modal"
                     data-target="#noticia4">Detalles</button>
                 <div class="modal fade" id="noticia4" tabindex="-1" aria-labelledby="exampleModalLabel"
                     aria-hidden="true">
@@ -218,9 +248,9 @@ include_once '../includes/class-autoload.inc.php';  //Incluir clases automática
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> -->
                 <!--Botonsote-->
-                <div class="card-footer">
+                <!-- <div class="card-footer">
                     <small class="text-muted">Deporte: Futbol Soccer</small>
                 </div>
             </div>
@@ -231,9 +261,9 @@ include_once '../includes/class-autoload.inc.php';  //Incluir clases automática
                     <h5 class="card-title">Scott regresará en dos semanas a PGA Champ.</h5>
                     <p class="card-text">Adam Scott está listo para hacer su tan esperado regreso al PGA Tour, ya que
                         planea regresar a la competencia en el PGA Championship.</p>
-                </div>
+                </div> -->
                 <!--Botonsote-->
-                <button type="button" class="btn btn-primary" data-toggle="modal"
+                <!-- <button type="button" class="btn btn-primary" data-toggle="modal"
                     data-target="#noticia4">Detalles</button>
                 <div class="modal fade" id="noticia4" tabindex="-1" aria-labelledby="exampleModalLabel"
                     aria-hidden="true">
@@ -254,19 +284,19 @@ include_once '../includes/class-autoload.inc.php';  //Incluir clases automática
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> -->
                 <!--Botonsote-->
 
-                <div class="card-footer">
+                <!-- <div class="card-footer">
                     <small class="text-muted">Deporte: Golf</small>
                 </div>
 
             </div>
-        </div>
+        </div> -->
         <!--Aqui termina el primer card-deck-->
 
         <!--Aqui empieza el segundo card-deck-->
-        <div class="card-deck">
+        <!-- <div class="card-deck">
             <div class="card">
                 <img src="https://www.eldiario24.com/d24ar/fotos/uploads/editorial/2013/12/29/imagenes/5255_ufc_anderson_silva_lesi%C3%B3n_2013_1.jpg"
                     class="card-img-top" alt="...">
@@ -275,9 +305,9 @@ include_once '../includes/class-autoload.inc.php';  //Incluir clases automática
                     <p class="card-text">El mejor peleador de la historia en UFC, la ‘Araña’ Anderson Silva lanzó una
                         patada abajo hacia Chris Weidman, quien defendió bien, pero el luchador brasileño se fracturó la
                         pierna de manera horrible y escalofriante.</p>
-                </div>
+                </div> -->
                 <!--Botonsote-->
-                <button type="button" class="btn btn-primary" data-toggle="modal"
+                <!-- <button type="button" class="btn btn-primary" data-toggle="modal"
                     data-target="#noticia4">Detalles</button>
                 <div class="modal fade" id="noticia4" tabindex="-1" aria-labelledby="exampleModalLabel"
                     aria-hidden="true">
@@ -298,9 +328,9 @@ include_once '../includes/class-autoload.inc.php';  //Incluir clases automática
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> -->
                 <!--Botonsote-->
-                <div class="card-footer">
+                <!-- <div class="card-footer">
                     <small class="text-muted">Deporte: MMA</small>
                 </div>
             </div>
@@ -314,9 +344,9 @@ include_once '../includes/class-autoload.inc.php';  //Incluir clases automática
                         que la intención del ala-pívot de Chicago es negociar un nuevo contrato para seguir vistiendo de
                         amarillo las próximas temporadas.
                     </p>
-                </div>
+                </div> -->
                 <!--Botonsote-->
-                <button type="button" class="btn btn-primary" data-toggle="modal"
+                <!-- <button type="button" class="btn btn-primary" data-toggle="modal"
                     data-target="#noticia4">Detalles</button>
                 <div class="modal fade" id="noticia4" tabindex="-1" aria-labelledby="exampleModalLabel"
                     aria-hidden="true">
@@ -337,9 +367,9 @@ include_once '../includes/class-autoload.inc.php';  //Incluir clases automática
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> -->
                 <!--Botonsote-->
-                <div class="card-footer">
+                <!-- <div class="card-footer">
                     <small class="text-muted">Deporte: Basketball</small>
                 </div>
             </divz>
@@ -350,9 +380,9 @@ include_once '../includes/class-autoload.inc.php';  //Incluir clases automática
                     <h5 class="card-title">Roger Federer descarta la charla sobre la jubilación</h5>
                     <p class="card-text">Roger Federer dice que continuará jugando mientras se divierta y siga siendo
                         competitivo, aunque ha estado haciendo planes para retirarse durante cinco años.</p>
-                </div>
+                </div> -->
                 <!--Botonsote-->
-                <button type="button" class="btn btn-primary" data-toggle="modal"
+                <!-- <button type="button" class="btn btn-primary" data-toggle="modal"
                     data-target="#noticia4">Detalles</button>
                 <div class="modal fade" id="noticia4" tabindex="-1" aria-labelledby="exampleModalLabel"
                     aria-hidden="true">
@@ -373,13 +403,13 @@ include_once '../includes/class-autoload.inc.php';  //Incluir clases automática
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> -->
                 <!--Botonsote-->
-                <div class="card-footer">
+                <!-- <div class="card-footer">
                     <small class="text-muted">Deporte: Tennis</small>
                 </div>
             </div>
-        </div>
+        </div> -->
         <!--Aqui termina el segundo card-deck-->
 
         <!--De aqui no pases culero, aqui es el container-->

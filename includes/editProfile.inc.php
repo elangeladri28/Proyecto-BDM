@@ -27,5 +27,6 @@ $Contrasena = $_POST['userPassEditProfile'];
 $userEdited = new UsersContr();
 $userEdited->editProfile($NombreUsuario, $ApPatUsuario, $ApMatUsuario, $telUsuario, $FotoUsuario, $Email, $Contrasena);
 //require "perfil.php";
+$_POST = array();
 header("location: ../html/perfil.php");
 exit();

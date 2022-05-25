@@ -1,3 +1,26 @@
+<?php
+include_once '../includes/class-autoload.inc.php';  //Incluir clases automáticamente
+if(isset($_GET['noticia'])){
+
+    $noticiaObj = new NoticiasView;
+    $noticiaImgsObj = new NewsImgsView;
+    $noticiaVidsObj = new NewsVidsView;
+    $creatorInfoObj = new UsersView;
+    $newsCatsObj = new NewsCatsView;
+    $seccionesObj = new SeccionesView;
+
+
+    $idNoticia = $_GET['noticia'];
+    $noticiaInfo = $noticiaObj->showNoticiaById($idNoticia);
+    $noticiaImagenes = $noticiaImgsObj->showNewsImgByNews($idNoticia);
+    $noticiaVideos = $noticiaVidsObj->showNewsVidByNews($idNoticia);
+    $creatorInfo = $creatorInfoObj->showUserByEmail($noticiaInfo[0]['creatorUser']);
+    $idSeccion = $newsCatsObj->showNewscatsByNews($idNoticia);
+    $idSeccion = $idSeccion[0]['categoryRelation'];
+    $seccionInfo = $seccionesObj->showSeccionById($idSeccion);
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -45,13 +68,43 @@
                 <div class="card mt-4">
                     <div id="carouselExampleCaptions" class="carousel slide under" data-ride="carousel">
                         <ol class="carousel-indicators">
-                            <li data-target="#carouselExampleCaptions" data-slide-to="0" class="active"></li>
+                            <?php
+                            $cantidadImagenes = count($noticiaImagenes);
+                            for ($i = 0; $i < $cantidadImagenes; $i++) {
+                                if($i==0){
+                                    echo '<li data-target="#carouselExampleCaptions" data-slide-to="' . $i . '" class="active"></li>';
+                                }
+                                else{
+                                    echo '<li data-target="#carouselExampleCaptions" data-slide-to="' . $i . '"></li>';
+                                }
+                            }
+                            ?>
+                            <!--<li data-target="#carouselExampleCaptions" data-slide-to="0" class="active"></li>
                             <li data-target="#carouselExampleCaptions" data-slide-to="1"></li>
-                            <li data-target="#carouselExampleCaptions" data-slide-to="2"></li>
+                            <li data-target="#carouselExampleCaptions" data-slide-to="2"></li>-->
                         </ol>
-            
+
                         <div class="carousel-inner">
-                            <div class="carousel-item active">
+                        <?php
+                            $index = 0;
+                            foreach($noticiaImagenes as $imagen){
+                                if($index==0){
+                                    echo'<div class="carousel-item active">';
+                                }
+                                else{
+                                    echo'<div class="carousel-item">';
+                                }
+                                echo'
+                                    <img src="data:image;base64,' . base64_encode($imagen['imageFile']) . '" class="d-block w-100 rounded" alt="...">
+                                </div>
+                                ';
+                                $index ++;
+                            }
+                        ?>
+                        </div>
+            
+                        <!--<div class="carousel-inner">
+                            <div class="carousel-item  active">
                                 <img src="https://notideportes.club/wp-content/uploads/2021/11/El-exito-y-la-marca-de-Spieth-siguen-siendo-importantes.jpg"
                                     class="d-block w-100 rounded" alt="...">
                                 
@@ -66,7 +119,7 @@
                                     class="d-block w-100 rounded" alt="...">
                                 
                             </div>
-                        </div>
+                        </div>-->
                         <a class="carousel-control-prev" href="#carouselExampleCaptions" role="button" data-slide="prev">
                             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                             <span class="sr-only">Previous</span>
@@ -92,13 +145,12 @@
                     <div class="card-body" style="text-align: center;">
 
                         <div class="media">
-                            
-                            <img src="https://www.personality-insights.com/wp-content/uploads/2017/12/default-profile-pic-e1513291410505.jpg" width="40px" class="mr-3" alt="...">
+                            <?php echo '<img src="data:image;base64,' . base64_encode($creatorInfo[0]['picture']) . '" width="40px" class="mr-3" alt="...">'?>
                             <div class="media-body">
-                              <h6 class="mt-0">Nombre de Periodista</h6>
+                              <h6 class="mt-0"><?php echo $creatorInfo[0]['name'] . ' ' . $creatorInfo[0]['lastname1'] . ' ' . $creatorInfo[0]['lastname2']?></h6>
                               <hr>
-                              <h5 class="mt-0">GOLF</h5>
-                              <p>Deporte individual en el que el objetivo es, utilizando diversos palos o bastones, introducir una pelota pequeña y dura en cada uno de los 18 hoyos que se encuentran en un extenso campo de césped al aire libre.</p>
+                              <h5 class="mt-0"><?php echo $noticiaInfo[0]['newsTitle']; ?></h5>
+                              <p><?php echo $noticiaInfo[0]['newsDescription']; ?></p>
                             </div>
                           </div>
        
@@ -113,6 +165,31 @@
 
 
         </div>
+
+        <br>
+
+        <div class="col-xs-">
+            <div class="card mt-4">
+                <div class="card-body" style="text-align: left;">
+                    <div class="media-body">
+                      <p class="mt-0"><?php echo $noticiaInfo[0]['newsText']; ?></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <br>
+
+        <?php
+            foreach($noticiaVideos as $video){
+                echo '<video width="100%" height="auto" controls style="background-color: black">
+                <source src="../' . $video['videoPath'] . '" type="video/mp4">
+                <source src="movie.ogg" type="video/ogg">
+                Your browser does not support the video tag.
+                </video>';
+            }
+            
+        ?>
 
         <br>
 

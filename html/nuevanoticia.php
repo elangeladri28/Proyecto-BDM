@@ -51,32 +51,39 @@ session_start();
     <div class="noticiamarco">
         <h1>Nueva Noticia</h1>
         <form id="createNoticiaForm" action="../includes/createNoticia.inc.php" method="post" enctype="multipart/form-data">
+
             <h4>Titulo:</h4>
             <div class="form-group" style="margin-right: 20px; margin-left: 5px;">
                 <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Titulo" name="crearNoticiaTitle" required>
             </div>
+
             <h4>Lugar de la noticia:</h4>
             <div class="form-group" style="margin-right: 20px; margin-left: 5px;">
                 <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Lugar de la noticia" name="crearNoticiaPlace">
             </div>
+
             <h4>Fecha de la noticia:</h4>
             <div class="form-group" style="margin-right: 20px; margin-left: 5px;">
                 <input type="datetime-local" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="crearNoticiaDatetime">
             </div>
+
             <h4>Descripcion:</h4>
             <div class="form-group" style="margin-right: 20px; margin-left: 5px;">
                 <textarea class="form-control" id="exampleFormControlTextarea1" placeholder="Descripcion" rows="4" name="crearNoticiaDesc" required></textarea>
             </div>
+
             <h4>Texto de la noticia:</h4>
             <div class="form-group" style="margin-right: 20px; margin-left: 5px;">
                 <textarea class="form-control" id="exampleFormControlTextarea1" placeholder="Texto de la noticia" rows="4" name="crearNoticiaText" required></textarea>
             </div>
+
             <h4>Sección:</h4>
-            <div class="form-group" style="margin-right: 20px; margin-left: 5px;">
-                <select class="form-control" id="exampleFormControlSelect1" name="crearNoticiaSeccion" required>
+            <div id="conjuntoSecciones" class="form-group" style="margin-right: 20px; margin-left: 5px;">
+                <select id="selectSeccion" class="form-control" id="exampleFormControlSelect1" name="crearNoticiaSeccion[]" required multiple>
                     <?php
                     $seccionesObj = new SeccionesView();
                     $seccionesList = $seccionesObj->showSecciones();
+                    //echo '<option value="" disabled selected hidden>Sección</option>';
                     foreach ($seccionesList as $seccion) {
                       echo '<option value="' . $seccion['categoryId'] . '">' . $seccion['categoryName'] . '</option>';
                     }
@@ -93,14 +100,36 @@ session_start();
                     <option>Ciclismo</option>-->
                 </select>
             </div>
+            <!--<a id="addSeccion" class="btn btn-success" style="margin-left:5px" onclick="addSeccionInput()">Agregar Sección</a>
+            <a id="deleteSeccion" class="btn btn-danger" onclick="deleteSeccionInput()">Eliminar Sección</a>-->
+
+            <!-- <script>
+                function addSeccionInput(){
+            	    var opciones = document.getElementById('selectSeccion');
+            	    var conjuntoSecciones = document.getElementById('conjuntoSecciones');
+            	    console.log('Hola');
+            	    var opcionesAdd = opciones.cloneNode(true);
+            	    conjuntoSecciones.appendChild(opcionesAdd);
+                }
+                function deleteSeccionInput(){
+                    var conjuntoSecciones = document.getElementById('conjuntoSecciones');
+                    var cantidadSecciones = conjuntoSecciones.getElementsByTagName('select');
+                    if(cantidadSecciones.length >1){
+                        conjuntoSecciones.removeChild(cantidadSecciones[(cantidadSecciones.length) - 1]);
+                    }
+                }
+            </script> -->
+
             <h4>Palabras clave:</h4>
             <div class="form-group" style="margin-right: 20px; margin-left: 5px;">
                 <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Palabras clave (Separadas por coma)" name="crearNoticiaKeywords">
             </div>
+
             <h4>Urgente:</h4>
             <div class="form-group" style="margin-right: 20px; margin-left: 5px;">
                 <input type="checkbox" style="height:30px;width:30px;" id="exampleInputEmail1" aria-describedby="emailHelp" name="crearNoticiaEsUrgente">
             </div>
+
             <h4>Imagenes:</h4>
             <div id="imageFiles" class="form-group-video">
                 <label>Agregar Imágenes</label>
@@ -118,6 +147,7 @@ session_start();
             <div class="form-group-video">
 
             </div>-->
+
             <h4 style="margin-top:20px">Videos:</h4>
             <div id="videoFiles" class="form-group-video">
                 <label for="Archivo1">Agregar videos</label>
@@ -125,6 +155,7 @@ session_start();
                 <!--<input type="file" class="form-control-file" id="Video2" name="crearNoticiaVid2" accept=".mp4,.wmv">
                 <input type="file" class="form-control-file" id="Video3" name="crearNoticiaVid3" accept=".mp4,.wmv">-->
             </div>
+
             <h4 style="margin-top:20px">Estado:</h4>
             <div class="form-group" style="margin-right: 20px; margin-left: 5px;">
                 <select class="form-control" id="exampleFormControlSelect1" name="crearNoticiaStatus">
@@ -132,6 +163,7 @@ session_start();
                     <option value="Terminada">Terminada</option>
                 </select>
             </div>
+
             <h4>Firma del reportero:</h4>
             <div class="form-group" style="margin-right: 20px; margin-left: 5px;">
                 <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Firma del reportero" name="crearNoticiaSign" required>
