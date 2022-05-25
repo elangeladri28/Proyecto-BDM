@@ -153,6 +153,8 @@ if (isset($_SESSION['email'])) {
                         ?>
 
                         </small>
+                        <br>
+                        <small><?php echo $noticia['publishDate'] ?></small>
                     </div>
                 </div>
                 <?php } ?>

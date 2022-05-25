@@ -1,5 +1,6 @@
 <?php
 include_once '../includes/class-autoload.inc.php';  //Incluir clases automáticamente
+session_start();
 if(isset($_GET['noticia'])){
 
     $noticiaObj = new NoticiasView;
@@ -140,24 +141,21 @@ if(isset($_GET['noticia'])){
             </div>
 
             <div class="col-lg-3">
-
                 <div class="card mt-4">
                     <div class="card-body" style="text-align: center;">
-
                         <div class="media">
                             <?php echo '<img src="data:image;base64,' . base64_encode($creatorInfo[0]['picture']) . '" width="40px" class="mr-3" alt="...">'?>
                             <div class="media-body">
-                              <h6 class="mt-0"><?php echo $creatorInfo[0]['name'] . ' ' . $creatorInfo[0]['lastname1'] . ' ' . $creatorInfo[0]['lastname2']?></h6>
-                              <hr>
-                              <h5 class="mt-0"><?php echo $noticiaInfo[0]['newsTitle']; ?></h5>
-                              <p><?php echo $noticiaInfo[0]['newsDescription']; ?></p>
+                                <h6 class="mt-0"><?php echo $creatorInfo[0]['name'] . ' ' . $creatorInfo[0]['lastname1'] . ' ' . $creatorInfo[0]['lastname2']?></h6>
+                                <hr>
+                                <small><?php echo $noticiaInfo[0]['publishDate']; ?></small>
+                                <hr>
+                                <h5 class="mt-0"><?php echo $noticiaInfo[0]['newsTitle']; ?></h5>
+                                <p><?php echo $noticiaInfo[0]['newsDescription']; ?></p>
                             </div>
-                          </div>
-       
-
+                        </div>
                     </div>
                 </div>
-
             </div>
 
             <!-- /.col-lg-3 -->
@@ -172,7 +170,9 @@ if(isset($_GET['noticia'])){
             <div class="card mt-4">
                 <div class="card-body" style="text-align: left;">
                     <div class="media-body">
-                      <p class="mt-0" style="white-space: pre-line"><?php echo $noticiaInfo[0]['newsText']; ?></p>
+                        <small><?php echo $noticiaInfo[0]['newsDate']; ?></small>
+                        <hr>
+                        <p class="mt-0" style="white-space: pre-line"><?php echo $noticiaInfo[0]['newsText']; ?></p>
                     </div>
                 </div>
             </div>
@@ -207,7 +207,7 @@ if(isset($_GET['noticia'])){
               foreach ($comments as $comment) {
                 $commentUser = $userObj->showUserByEmail($comment['commentOwnerUser']);
                 echo '
-                <li class="row clearfix">
+                <li class="row clearfix" style="margin-top:20px">
                 <div class="icon-box col-md-2 col-4"><img class="img-fluid img-thumbnail" src="data:image;base64,' . base64_encode($commentUser[0]['picture']) . '" alt="Awesome Image" style="width: 120px;;height:120px;"></div>
                   <div class="text-box col-md-10 col-8 p-l-0 p-r0">
                     <h5 class="m-b-0">' . $commentUser[0]['name'] . ' ' . $commentUser[0]['lastname1'] . ' ' . $commentUser[0]['lastname2'] . '</h5>
@@ -216,11 +216,18 @@ if(isset($_GET['noticia'])){
                   </div>
                 </li>
                 ';
+                if (isset($_SESSION['email'])) {
+                echo '<a href="noticiaespecifica.php?noticia=' . $idNoticia . '&responder=' . $comment['commentId'] . '" class="btn btn-primary" style="margin-top:20px">Responder</a>';
+                    $sessionUserInfo = $userObj->showUserByEmail($_SESSION['email']);
+                    if ($sessionUserInfo[0]['userType'] == 1 || $sessionUserInfo[0]['userEmail'] == $commentUser[0]['userEmail'] || $sessionUserInfo[0]['userEmail'] == $noticiaInfo[0]['creatorUser']) {
+                    echo '<a href="../includes/deleteComment.inc.php?noticia=' . $idNoticia . '&comentario=' . $comment['commentId'] . '" class="btn btn-danger" style="margin-top:20px;margin-left:10px">Eliminar</a>';
+                    }
+                }
                 $replyComments = $commentObj->showReplyByMainComment($comment['commentId']);
                 foreach($replyComments as $replyComment){
                     $replyCommentUser = $userObj->showUserByEmail($replyComment['commentOwnerUser']);
                     echo '
-                    <li class="row clearfix" style="margin-left:150px">
+                    <li class="row clearfix" style="margin-left:150px;margin-top:20px">
                     <div class="icon-box col-md-2 col-4"><img class="img-fluid img-thumbnail" src="data:image;base64,' . base64_encode($replyCommentUser[0]['picture']) . '" alt="Awesome Image" style="width: 120px;;height:120px;"></div>
                       <div class="text-box col-md-10 col-8 p-l-0 p-r0">
                         <h5 class="m-b-0">' . $replyCommentUser[0]['name'] . ' ' . $replyCommentUser[0]['lastname1'] . ' ' . $replyCommentUser[0]['lastname2'] . '</h5>
@@ -229,12 +236,49 @@ if(isset($_GET['noticia'])){
                       </div>
                     </li>
                     ';
+                    if (isset($_SESSION['email'])) {
+                            $sessionUserInfo = $userObj->showUserByEmail($_SESSION['email']);
+                            if ($sessionUserInfo[0]['userType'] == 1 || $sessionUserInfo[0]['userEmail'] == $replyCommentUser[0]['userEmail'] || $sessionUserInfo[0]['userEmail'] == $noticiaInfo[0]['creatorUser']) {
+                            echo '<a href="../includes/deleteComment.inc.php?noticia=' . $idNoticia . '&comentario=' . $replyComment['commentId'] . '" class="btn btn-danger" style="margin-top:20px;margin-left:165px">Eliminar</a>';
+                            }
+                        }
                 }
               }
               ?>
             </ul>
           </div>
         </div>
+
+        <br>
+
+        <?php
+        if (isset($_SESSION['email'])) {
+          echo '
+          <form method="POST" action="../includes/postComment.inc.php?noticia=' . $idNoticia . '';
+          if(isset($_GET['responder'])){
+              echo '&responder=' . $_GET['responder'] . '';
+          }
+          echo '" class="card">
+          <div class="header">
+            <h4 style="margin-left:20px;margin-top:20px">Publica un comentario</h4>
+          </div>
+          <div class="body">
+            <div class="comment-form">
+              <form class="row clearfix">
+                <div class="col-sm-12">
+                  <div class="form-group">';
+                  echo '<textarea rows="4" class="form-control no-resize" placeholder="Escribe un comentario..." name="commentText" require></textarea>';
+          echo
+          '</div>
+                  <button type="submit" class="btn btn-block btn-primary" style="margin-bottom:20px" name="postCommentBtn">Publicar</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </form>
+          ';
+        }
+        ?>
 
         <br>
 

@@ -15,6 +15,17 @@ class Noticias extends Dbh
         return $results;
     }
 
+    protected function getNoticiaPublicadaById($newsId)
+    {
+
+        $sql = "CALL abcNoticia(?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->execute(["getPubId", $newsId, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
+
+        $results = $stmt->fetchAll();
+        return $results;
+    }
+
     protected function setNoticia($newsTitle, $newsDesc, $newsText, $newsCreator, $newsStatus, $newsPlace, $newsDate, $newsSign, $newsKeywords, $newsImportant)
     {
 
@@ -158,7 +169,7 @@ class Noticias extends Dbh
             $keywordString = " AND keyWords LIKE '%$searchKeyword%'";
         }
         $sql = "SELECT newsId, newsTitle, newsDescription, newsText, creatorUser, newsStatus, editorComment, newsPlace, newsDate, publishDate,
-        signature, keyWords, important, likes, active FROM news WHERE newsTitle!=''" . $fechaDesdeString . $fechaHastaString . $textString . $keywordString . " AND newsStatus='Publicada' ORDER BY publishDate DESC";
+        signature, keyWords, important, likes, active FROM news WHERE newsTitle!=''" . $fechaDesdeString . $fechaHastaString . $textString . $keywordString . " AND newsStatus='Publicada' AND active = 1 ORDER BY publishDate DESC";
         //echo $sql;
         $stmt = $this->connect()->prepare($sql);
         $stmt->execute();

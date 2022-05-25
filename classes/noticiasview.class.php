@@ -10,6 +10,13 @@ class NoticiasView extends Noticias
         return $results;
     }
 
+    public function showNoticiaPublicadaById($newsId)
+    {
+        
+        $results = $this->getNoticiaPublicadaById($newsId);
+        return $results;
+    }
+
     public function showNoticiasRecientes()
     {
         

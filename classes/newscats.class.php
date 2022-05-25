@@ -26,6 +26,17 @@ class Newscats extends Dbh
         return $results;
     }
 
+    protected function getNewscatsByCat($categoryRelation)
+    {
+
+        $sql = "CALL abcNewscats(?,?,?,?)";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->execute(["getByCat",0,0,$categoryRelation]);
+
+        $results = $stmt->fetchAll();
+        return $results;
+    }
+
     protected function exists($newsId,$categoryId)
     {
 

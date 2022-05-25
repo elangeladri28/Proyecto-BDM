@@ -17,6 +17,13 @@ class NewsCatsView extends NewsCats
         return $results;
     }
 
+    public function showNewscatsByCat($categoryRelation)
+    {
+        
+        $results = $this->getNewscatsByCat($categoryRelation);
+        return $results;
+    }
+
     public function newsCatExists($newsId,$categoryId)
     {
         

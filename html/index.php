@@ -130,6 +130,7 @@ include_once '../includes/class-autoload.inc.php';  //Incluir clases automática
 
 
         <div class="container">
+            <h1 style="color:white">Noticias más recientes</h1>
             <div class="row clearfix">
                 <?php
                     $noticiasObj = new NoticiasView;
@@ -204,11 +205,115 @@ include_once '../includes/class-autoload.inc.php';  //Incluir clases automática
                         ?>
 
                         </small>
+                        <br>
+                        <small><?php echo $noticia['publishDate'] ?></small>
                     </div>
                 </div>
                 <?php } ?>
             </div>
         </div>
+
+        <?php
+        $seccionesObj = new SeccionesView;
+        $secciones = $seccionesObj->showSecciones();
+        $newsCatsObj = new NewsCatsView;
+        foreach($secciones as $seccion){
+            $newsCats = $newsCatsObj->showNewscatsByCat($seccion['categoryId']);
+            $idsNoticias = [];
+            $i = 0;
+            foreach($newsCats as $newsCat){
+                $idsNoticias[$i] = $newsCat['newsRelation'];
+                $i++;
+            }
+            ?>
+        <div class="container" style="background-color:<?php echo $seccion['categoryColor'];?>;margin-bottom:50px">
+            <h1 style="color:white"><?php echo $seccion['categoryName']; ?></h1>
+            <div class="row clearfix">
+            <?php
+            foreach($idsNoticias as $idNoticia){
+                $newsObj = new NoticiasView;
+                $noticiaInfo = $newsObj->showNoticiaPublicadaById($idNoticia);
+                $newsImgObj = new NewsImgsView;
+                $imagenesNoticia = $newsImgObj->showNewsImgByNews($idNoticia);
+                $newsCats2 = $newsCatsObj->showNewscatsByNews($idNoticia);
+                $seccionesNoticia = [];
+                //echo count($seccionesNoticia);
+                $i=0;
+                //echo count($newsCats);
+                //echo $newsCats[0]['newsRelation'];
+                //echo count($imagenesNoticia);
+                foreach($newsCats2 as $newsCat2){
+                    $seccionInfo=$seccionesObj->showSeccionById($newsCat2['categoryRelation']);
+                    $nombreSeccion=$seccionInfo[0]['categoryName'];
+                    $seccionesNoticia[$i]=$nombreSeccion;
+                    //echo $idNoticia;
+                    //echo $nombreSeccion;
+                    //echo $i;
+                    $i++;
+                }
+                if($noticiaInfo!=NULL){
+                ?>
+                <div class="card" style="width:31.33%;margin:1%">
+                    <img src="data:image;base64,<?php echo base64_encode($imagenesNoticia[0]['imageFile']); ?>"
+                        class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title"> <?php echo $noticiaInfo[0]['newsTitle']; ?> </h5>
+                        <p class="card-text"> <?php echo $noticiaInfo[0]['newsDescription']; ?> </p>
+                    </div>
+                    <!--Botonsote-->
+                    <a href="noticiaespecifica.php?noticia=<?php echo $noticiaInfo[0]['newsId']; ?>" type="button" class="btn btn-primary">Ver Noticia</a>
+                    <div class="modal fade" id="noticia4" tabindex="-1" aria-labelledby="exampleModalLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-scrollable">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    ...
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                    <button type="button" class="btn btn-primary">Ver noticia</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--Botonsote-->
+                    <div class="card-footer">
+                        <small class="text-muted">
+
+                        <?php
+                        $i=0;
+                        foreach($seccionesNoticia as $seccionNoticia){
+                            if($i==0){
+                                echo 'Sección: ' . $seccionNoticia;
+                            }
+                            else{
+                                echo ', ' . $seccionNoticia;
+                            }
+                            $i++;
+                        }
+                        ?>
+
+                        </small>
+                        <br>
+                        <small><?php echo $noticiaInfo[0]['publishDate'] ?></small>
+                    </div>
+                </div>
+                <?php
+                }
+            }
+            ?>
+            </div>
+        </div>
+        <?php
+        }
+        ?>
+
 
 
 

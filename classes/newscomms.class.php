@@ -47,6 +47,9 @@ class NewsComms extends Dbh
     }
 
     protected function delComment($commentId){
+        $sql = "SELECT deleteComment(?)";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->execute([$commentId]);
         $sql = "CALL abcNewscomms(?,?,?,?,?,?,?)";
         $stmt = $this->connect()->prepare($sql);
         $stmt->execute(["delete", $commentId, 0, 0, 0, 0, 0]);
