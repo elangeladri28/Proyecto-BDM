@@ -106,6 +106,16 @@ class Noticias extends Dbh
         return $results;
     }
 
+    protected function getNoticiasUrgentes()
+    {
+
+        $sql = "CALL abcNoticia(?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->execute(["getUrg",0,0,0,0,0,0,0,0,0,0,0,0,0]);
+        $results = $stmt->fetchAll();
+        return $results;
+    }
+
     protected function getNextId()
     {
 

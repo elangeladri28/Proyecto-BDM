@@ -45,6 +45,13 @@ class NoticiasView extends Noticias
         return $results;
     }
 
+    public function showNoticiasUrgentes()
+    {
+        
+        $results = $this->getNoticiasUrgentes();
+        return $results;
+    }
+
     public function showNoticiasSearch($searchFechaDesde, $searchFechaHasta, $searchText, $searchKeyword)
     {
         

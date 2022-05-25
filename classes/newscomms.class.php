@@ -15,12 +15,23 @@ class NewsComms extends Dbh
         return $results;
     }
 
-    protected function getCommentByNews($commentOwnerNews)
+    protected function getMainCommentByNews($commentOwnerNews)
     {
 
         $sql = "CALL abcNewscomms(?,?,?,?,?,?,?)";
         $stmt = $this->connect()->prepare($sql);
-        $stmt->execute(["getByNews", 0, 0, 0, $commentOwnerNews, 0, 0]);
+        $stmt->execute(["mainByNews", 0, 0, 0, $commentOwnerNews, 0, 0]);
+
+        $results = $stmt->fetchAll();
+        return $results;
+    }
+
+    protected function getReplyByMainComment($commentReplied)
+    {
+
+        $sql = "CALL abcNewscomms(?,?,?,?,?,?,?)";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->execute(["repByMain", 0, 0, $commentReplied, 0, 0, 0]);
 
         $results = $stmt->fetchAll();
         return $results;

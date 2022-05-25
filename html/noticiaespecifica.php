@@ -172,7 +172,7 @@ if(isset($_GET['noticia'])){
             <div class="card mt-4">
                 <div class="card-body" style="text-align: left;">
                     <div class="media-body">
-                      <p class="mt-0"><?php echo $noticiaInfo[0]['newsText']; ?></p>
+                      <p class="mt-0" style="white-space: pre-line"><?php echo $noticiaInfo[0]['newsText']; ?></p>
                     </div>
                 </div>
             </div>
@@ -190,6 +190,51 @@ if(isset($_GET['noticia'])){
             }
             
         ?>
+
+        <br>
+
+        <div class="card">
+          <div class="header">
+            <h2 style="margin-left:50px;margin-top:50px">Comentarios</h2>
+          </div>
+          <div class="body" style="margin:50px">
+            <ul class="comment-reply list-unstyled">
+              <!--COMENTARIOS-->
+              <?php
+              $commentObj = new NewsCommsView;
+              $userObj = new UsersView;
+              $comments = $commentObj->showMainCommentByNews($idNoticia);
+              foreach ($comments as $comment) {
+                $commentUser = $userObj->showUserByEmail($comment['commentOwnerUser']);
+                echo '
+                <li class="row clearfix">
+                <div class="icon-box col-md-2 col-4"><img class="img-fluid img-thumbnail" src="data:image;base64,' . base64_encode($commentUser[0]['picture']) . '" alt="Awesome Image" style="width: 120px;;height:120px;"></div>
+                  <div class="text-box col-md-10 col-8 p-l-0 p-r0">
+                    <h5 class="m-b-0">' . $commentUser[0]['name'] . ' ' . $commentUser[0]['lastname1'] . ' ' . $commentUser[0]['lastname2'] . '</h5>
+                    <p>' . $comment['commentText'] . '</p>
+                    <small>' . $comment['commentDate'] . '</small>
+                  </div>
+                </li>
+                ';
+                $replyComments = $commentObj->showReplyByMainComment($comment['commentId']);
+                foreach($replyComments as $replyComment){
+                    $replyCommentUser = $userObj->showUserByEmail($replyComment['commentOwnerUser']);
+                    echo '
+                    <li class="row clearfix" style="margin-left:150px">
+                    <div class="icon-box col-md-2 col-4"><img class="img-fluid img-thumbnail" src="data:image;base64,' . base64_encode($replyCommentUser[0]['picture']) . '" alt="Awesome Image" style="width: 120px;;height:120px;"></div>
+                      <div class="text-box col-md-10 col-8 p-l-0 p-r0">
+                        <h5 class="m-b-0">' . $replyCommentUser[0]['name'] . ' ' . $replyCommentUser[0]['lastname1'] . ' ' . $replyCommentUser[0]['lastname2'] . '</h5>
+                        <p>' . $replyComment['commentText'] . '</p>
+                        <small>' . $replyComment['commentDate'] . '</small>
+                      </div>
+                    </li>
+                    ';
+                }
+              }
+              ?>
+            </ul>
+          </div>
+        </div>
 
         <br>
 

@@ -43,16 +43,52 @@ include_once '../includes/class-autoload.inc.php';  //Incluir clases automática
     <!--Hasta aqui termina mi header, aunque es body xd-->
 
     <!--Aqui empieza la pagina mecanicas-->
+    <?php
+    $noticiasUrgObj = new NoticiasView;
+    $listaNoticiasUrg = $noticiasUrgObj->showNoticiasUrgentes();
+    ?>
     <div class="container">
         <div id="carouselExampleCaptions" class="carousel slide under" data-ride="carousel">
             <ol class="carousel-indicators">
-                <li data-target="#carouselExampleCaptions" data-slide-to="0" class="active"></li>
+                <?php
+                $cantidadNoticiasUrg = count($listaNoticiasUrg);
+                for ($i = 0; $i < $cantidadNoticiasUrg; $i++) {
+                    if($i==0){
+                        echo '<li data-target="#carouselExampleCaptions" data-slide-to="' . $i . '" class="active"></li>';
+                    }
+                    else{
+                        echo '<li data-target="#carouselExampleCaptions" data-slide-to="' . $i . '"></li>';
+                    }
+                }
+                ?>
+                <!-- <li data-target="#carouselExampleCaptions" data-slide-to="0" class="active"></li>
                 <li data-target="#carouselExampleCaptions" data-slide-to="1"></li>
-                <li data-target="#carouselExampleCaptions" data-slide-to="2"></li>
+                <li data-target="#carouselExampleCaptions" data-slide-to="2"></li> -->
             </ol>
 
             <div class="carousel-inner">
-                <div class="carousel-item active">
+                <?php
+                $index = 0;
+                foreach($listaNoticiasUrg as $noticiaUrg){
+                    if($index==0){
+                        echo'<div class="carousel-item active">';
+                    }
+                    else{
+                        echo'<div class="carousel-item">';
+                    }
+                    $newsImgsObj = new NewsImgsView;
+                    $newsImgs = $newsImgsObj->showNewsImgByNews($noticiaUrg['newsId']);
+                    echo'
+                        <img src="data:image;base64,' . base64_encode($newsImgs[0]['imageFile']) . '" class="d-block w-100 rounded" alt="...">';
+                    echo '<div class="carousel-caption d-none d-md-block">
+                        <a href="noticiaespecifica.php?noticia=' . $noticiaUrg['newsId'] . '" class="h5" style="color:white">' . $noticiaUrg['newsTitle'] . '</a>
+                        <p>' . $noticiaUrg['newsDescription'] . '</p>
+                    </div>
+                    </div>';
+                    $index ++;
+                }
+                ?>
+                <!-- <div class="carousel-item active">
                     <img src="https://cdn2.mediotiempo.com/uploads/media/2020/10/11/casos-coronavirus-nfl-obligado-multiples.jpg"
                         class="d-block w-100 rounded" alt="...">
                     <div class="carousel-caption d-none d-md-block">
@@ -75,7 +111,7 @@ include_once '../includes/class-autoload.inc.php';  //Incluir clases automática
                         <h5>Liderando Medio Maraton</h5>
                         <p>Jepchirchir cimenta un lugar en la historia como medio maratón de todos los tiempos.</p>
                     </div>
-                </div>
+                </div> -->
             </div>
             <a class="carousel-control-prev" href="#carouselExampleCaptions" role="button" data-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
