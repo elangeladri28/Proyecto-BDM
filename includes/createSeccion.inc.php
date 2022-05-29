@@ -13,8 +13,10 @@ if (isset($_POST['createSeccionBtn'])) {
     //$seccionImage = file_get_contents(addslashes($seccionImage));
 
     $createSeccionSucc = $createSeccion->createSeccion($seccionName, $seccionColor, $seccionOrder);
-    if ($createSeccionSucc) {
-        //Mensaje de registro exitoso
+    if (!$createSeccionSucc) {
+        $_POST = array();
+        header("location: ../html/secciones.php?error=create");
+        exit();
     }
 }
 $_POST = array();

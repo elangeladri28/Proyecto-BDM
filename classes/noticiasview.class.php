@@ -59,6 +59,13 @@ class NoticiasView extends Noticias
         return $results;
     }
 
+    public function showNoticiasPorSeccion($categoryId)
+    {
+        
+        $results = $this->getNoticiasPorSeccion($categoryId);
+        return $results;
+    }
+
     public function showNoticiasSearch($searchFechaDesde, $searchFechaHasta, $searchText, $searchKeyword)
     {
         

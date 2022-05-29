@@ -67,6 +67,14 @@ class Noticias extends Dbh
         $stmt->execute(["delete", $newsId, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
     }
 
+    protected function delNoticiaSeccion($newsId)
+    {
+
+        $sql = "SELECT deleteNewsBycat(?)";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->execute([$newsId]);
+    }
+
     protected function getNoticiasRecientes()
     {
 
@@ -123,6 +131,16 @@ class Noticias extends Dbh
         $sql = "CALL abcNoticia(?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
         $stmt = $this->connect()->prepare($sql);
         $stmt->execute(["getUrg",0,0,0,0,0,0,0,0,0,0,0,0,0]);
+        $results = $stmt->fetchAll();
+        return $results;
+    }
+
+    protected function getNoticiasPorSeccion($categoryId)
+    {
+
+        $sql = "CALL abcNoticia(?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->execute(["getByCat",$categoryId,0,0,0,0,0,0,0,0,0,0,0,0]);
         $results = $stmt->fetchAll();
         return $results;
     }

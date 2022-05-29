@@ -20,15 +20,26 @@ class Secciones extends Dbh
 
         $sql = "CALL abcSeccion(?,?,?,?,?,?)";
         $stmt = $this->connect()->prepare($sql);
-        $insertSucc = $stmt->execute(["set", 0, $categoryName, $categoryColor, $categoryOrder, 1]);
-        return $insertSucc;
+        try{
+            $insertSucc = $stmt->execute(["set", 0, $categoryName, $categoryColor, $categoryOrder, 1]);
+            return $insertSucc;
+        }
+        catch(Exception $e){
+            return FALSE;
+        }
     }
 
     protected function editSeccion($categoryId, $categoryName, $categoryColor, $categoryOrder)
     {
         $sql = "CALL abcSeccion(?,?,?,?,?,?)";
         $stmt = $this->connect()->prepare($sql);
-        $stmt->execute(["edit",$categoryId, $categoryName, $categoryColor, $categoryOrder, 0]);
+        try{
+            $stmt->execute(["edit",$categoryId, $categoryName, $categoryColor, $categoryOrder, 0]);
+            return TRUE;
+        }
+        catch(Exception $e){
+            return FALSE;
+        }
     }
 
     protected function delSeccion($seccionId)

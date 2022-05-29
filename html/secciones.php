@@ -128,6 +128,13 @@ if (isset($_GET['seccionId'])) {
 
     <div class="row">
       <div class="col-lg-6">
+        <?php
+        if(isset($_GET['error']) && $_GET['error']=="create"){
+        ?>
+        <h5>Asegúrate de que el orden o el nombre no estén ocupados por otra sección</h5>
+        <?php
+        }
+        ?>
         <div class="alta-seccion">
           <form id="createSeccionForm" method="POST" action="../includes/createSeccion.inc.php" enctype="multipart/form-data">
             <h2 style="text-align: center;">Agregar Sección</h2>
@@ -276,7 +283,15 @@ if (isset($_GET['seccionId'])) {
       </div>
     </div>
     <div class="row" style="margin-top: 40px">
+      
       <div class="col-lg-6">
+        <?php
+        if(isset($_GET['error']) && $_GET['error']=="edit"){
+        ?>
+        <h5>Asegúrate de que el orden o el nombre no estén ocupados por otra sección</h5>
+        <?php
+        }
+        ?>
         <div class="alta-seccion">
           <form id="createSeccionForm" method="POST" action="../includes/editDeleteSeccion.inc.php<?php if (isset($_GET['seccionId'])) {echo "?seccionId=" . $seccionInfo[0]['categoryId'];} ?>" enctype="multipart/form-data">
             <h2 style="text-align: center;">Modificar o Eliminar Sección</h2>

@@ -48,7 +48,7 @@ if (isset($_SESSION['email'])) {
                         $seccionesObj = new SeccionesView();
                         $seccionesList = $seccionesObj->showSecciones();
                         foreach ($seccionesList as $seccion) {
-                            echo '<a class="dropdown-item" href="specificSeccion.php?idShowSeccion=' . $seccion['categoryId'] . '" style="background-color:' . $seccion['categoryColor'] . ';color:white" >' . $seccion['categoryName'] . '</a>';
+                            echo '<a class="dropdown-item" href="seccionEspecifica.php?idShowSeccion=' . $seccion['categoryId'] . '" style="background-color:' . $seccion['categoryColor'] . ';color:white" >' . $seccion['categoryName'] . '</a>';
                         }
                     ?>
                     <!--<a class="dropdown-item" href="onlysoccer.html">Futbol Soccer</a>

@@ -14,7 +14,8 @@ class SeccionesContr extends Secciones
     public function modifySeccion($categoryId, $categoryName, $categoryColor, $categoryOrder)
     {
 
-        $this->editSeccion($categoryId, $categoryName, $categoryColor, $categoryOrder);
+        $result = $this->editSeccion($categoryId, $categoryName, $categoryColor, $categoryOrder);
+        return $result;
     }
 
     public function deleteSeccion($seccionId)

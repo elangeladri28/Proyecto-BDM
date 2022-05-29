@@ -35,6 +35,13 @@ class NoticiasContr extends Noticias
         $this->delNoticia($newsId);
     }
 
+    public function deleteNoticiaSeccion($newsId)
+    {
+
+        $this->delNoticiaSeccion($newsId);
+    }
+
+
     public function showNextId()
     {
 
