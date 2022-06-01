@@ -13,6 +13,7 @@ class NewsLikesContr extends NewsLikes
 
     public function deleteLike($newsId, $userEmail){
 
-        $this->delLike($newsId, $userEmail);
+        $result = $this->delLike($newsId, $userEmail);
+        return $result;
     }
 }

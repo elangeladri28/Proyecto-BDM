@@ -103,15 +103,21 @@ if (isset($_SESSION['email'])) {
             
         </ul>
 
-        <form method="POST" action="resultadoBusqueda.php" class="form-inline my-2 my-lg-0">
+        <form method="POST" action="reportes.php" class="form-inline my-2 my-lg-0">
             <a style="margin-right:5px">Desde:</a>
-            <input class="form-control mr-sm-2" type="datetime-local" placeholder="desde" aria-label="Search" name="searchFechaDesde">
+            <input class="form-control mr-sm-2" type="datetime-local" placeholder="desde" aria-label="Search" name="repFechaDesde">
             <a style="margin-right:5px">Hasta:</a>
-            <input class="form-control mr-sm-2" type="datetime-local" placeholder="hasta" aria-label="Search" name="searchFechaHasta">
-            <input class="form-control mr-sm-2" type="search" placeholder="Título/texto" aria-label="Search" name="searchText">
-            <input class="form-control mr-sm-2" type="search" placeholder="Palabra clave" aria-label="Search" name="searchKeyword">
-            <button class="btn btn-success my-2 my-sm-0" type="submit" name="buscarBtn">
-                <img src="../images/920-9209972_magnifying-glass-png-white-search-icon-white-png.png" width="20" height="20" alt=""></button>
+            <input class="form-control mr-sm-2" type="datetime-local" placeholder="hasta" aria-label="Search" name="repFechaHasta">
+            <select id="selectSeccion" class="form-control" id="exampleFormControlSelect1" name="repFiltroSeccion" style="margin-right:8px">
+                <?php
+                echo '<option value="" selected disabled hidden>Sección</option>';
+                foreach ($seccionesList as $seccion) {
+                  echo '<option value="' . $seccion['categoryId'] . '" style="background-color:' . $seccion['categoryColor'] . '">' . $seccion['categoryName'] . '</option>';
+                }
+                ?>
+            </select>
+            <button class="btn btn-success my-2 my-sm-0" type="submit" name="reporteNoticiasBtn" style="margin-right:8px">Reporte por noticias</button>
+            <button class="btn btn-success my-2 my-sm-0" type="submit" name="reporteSeccionesBtn">Reporte por secciones</button>
         </form>
         <!-- <form class="form-inline my-2 my-lg-0">
             <input class="form-control mr-sm-2" type="search" placeholder="Buscar" aria-label="Search">

@@ -44,6 +44,19 @@ if(isset($_GET['noticia'])){
         crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
     <link rel="stylesheet" href="../css/modsgolf.css" />
+    <script>src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"</script>
+    <script>
+        $(document).ready(function() {
+            $(".like__btn").click(function(){
+                //console.log('SiEntraAlScript');
+                $("#like").load("../includes/manageLikes.inc.php",{
+                    noticia: <?php echo $idNoticia;?>,
+                    usuario: <?php echo '"' . $_SESSION['email'] . '"';?>
+                });
+            });
+        });
+    </script>
+
 </head>
 
 <header>
@@ -138,6 +151,35 @@ if(isset($_GET['noticia'])){
 
                 <!-- /.card -->
 
+                <!--BOTON DE LIKE-->
+
+                <?php
+                $likeObj = new NewsLikesView;
+                if(isset($_SESSION['email'])){
+                    $isLiked = $likeObj->showLikeUserNews($idNoticia,$_SESSION['email']);
+                    $isLiked = $isLiked[0]['exists'];
+                    //echo $isLiked;
+                }
+                else{
+                    $isLiked = FALSE;
+                    //echo $isLiked;
+                }
+                ?>
+
+                <?php
+                if($noticiaInfo[0]['newsStatus']=='Publicada'){
+                ?>
+                <div style="margin-top:10px">
+                    <button class="like__btn" id="like" <?php if(!isset($_SESSION['email'])){ echo 'disabled'; }?>>
+                        <span id="icon"><i <?php if($isLiked){echo 'class="fa-solid fa-thumbs-up"';}else{echo 'class="fa-regular fa-thumbs-up"';}?>></i></span>
+                        <span id="count"><?php echo $noticiaInfo[0]['likes'] ?></span>
+                    </button>
+                </div>
+                <script src="../js/likebtn.js"></script>
+                <?php
+                }
+                ?>
+
             </div>
 
             <div class="col-lg-3">
@@ -170,6 +212,8 @@ if(isset($_GET['noticia'])){
             <div class="card mt-4">
                 <div class="card-body" style="text-align: left;">
                     <div class="media-body">
+                        <small><?php echo $noticiaInfo[0]['newsPlace']; ?></small>
+                        <hr>
                         <small><?php echo $noticiaInfo[0]['newsDate']; ?></small>
                         <hr>
                         <p class="mt-0" style="white-space: pre-line"><?php echo $noticiaInfo[0]['newsText']; ?></p>
@@ -193,6 +237,9 @@ if(isset($_GET['noticia'])){
 
         <br>
 
+        <?php
+        if($noticiaInfo[0]['newsStatus']=='Publicada'){
+        ?>
         <div class="card">
           <div class="header">
             <h2 style="margin-left:50px;margin-top:50px">Comentarios</h2>
@@ -204,47 +251,52 @@ if(isset($_GET['noticia'])){
               $commentObj = new NewsCommsView;
               $userObj = new UsersView;
               $comments = $commentObj->showMainCommentByNews($idNoticia);
-              foreach ($comments as $comment) {
-                $commentUser = $userObj->showUserByEmail($comment['commentOwnerUser']);
-                echo '
-                <li class="row clearfix" style="margin-top:20px">
-                <div class="icon-box col-md-2 col-4"><img class="img-fluid img-thumbnail" src="data:image;base64,' . base64_encode($commentUser[0]['picture']) . '" alt="Awesome Image" style="width: 120px;;height:120px;"></div>
-                  <div class="text-box col-md-10 col-8 p-l-0 p-r0">
-                    <h5 class="m-b-0">' . $commentUser[0]['name'] . ' ' . $commentUser[0]['lastname1'] . ' ' . $commentUser[0]['lastname2'] . '</h5>
-                    <p>' . $comment['commentText'] . '</p>
-                    <small>' . $comment['commentDate'] . '</small>
-                  </div>
-                </li>
-                ';
-                if (isset($_SESSION['email'])) {
-                echo '<a href="noticiaespecifica.php?noticia=' . $idNoticia . '&responder=' . $comment['commentId'] . '" class="btn btn-primary" style="margin-top:20px">Responder</a>';
-                    $sessionUserInfo = $userObj->showUserByEmail($_SESSION['email']);
-                    if ($sessionUserInfo[0]['userType'] == 1 || $sessionUserInfo[0]['userEmail'] == $commentUser[0]['userEmail'] || $sessionUserInfo[0]['userEmail'] == $noticiaInfo[0]['creatorUser']) {
-                    echo '<a href="../includes/deleteComment.inc.php?noticia=' . $idNoticia . '&comentario=' . $comment['commentId'] . '" class="btn btn-danger" style="margin-top:20px;margin-left:10px">Eliminar</a>';
-                    }
-                }
-                $replyComments = $commentObj->showReplyByMainComment($comment['commentId']);
-                foreach($replyComments as $replyComment){
-                    $replyCommentUser = $userObj->showUserByEmail($replyComment['commentOwnerUser']);
-                    echo '
-                    <li class="row clearfix" style="margin-left:150px;margin-top:20px">
-                    <div class="icon-box col-md-2 col-4"><img class="img-fluid img-thumbnail" src="data:image;base64,' . base64_encode($replyCommentUser[0]['picture']) . '" alt="Awesome Image" style="width: 120px;;height:120px;"></div>
-                      <div class="text-box col-md-10 col-8 p-l-0 p-r0">
-                        <h5 class="m-b-0">' . $replyCommentUser[0]['name'] . ' ' . $replyCommentUser[0]['lastname1'] . ' ' . $replyCommentUser[0]['lastname2'] . '</h5>
-                        <p>' . $replyComment['commentText'] . '</p>
-                        <small>' . $replyComment['commentDate'] . '</small>
-                      </div>
-                    </li>
-                    ';
-                    if (isset($_SESSION['email'])) {
-                            $sessionUserInfo = $userObj->showUserByEmail($_SESSION['email']);
-                            if ($sessionUserInfo[0]['userType'] == 1 || $sessionUserInfo[0]['userEmail'] == $replyCommentUser[0]['userEmail'] || $sessionUserInfo[0]['userEmail'] == $noticiaInfo[0]['creatorUser']) {
-                            echo '<a href="../includes/deleteComment.inc.php?noticia=' . $idNoticia . '&comentario=' . $replyComment['commentId'] . '" class="btn btn-danger" style="margin-top:20px;margin-left:165px">Eliminar</a>';
-                            }
-                        }
-                }
+              if(count($comments) == 0){
+                echo '<h5>Sé el primero en dejar un comentario</h5>';
               }
-              ?>
+              else{
+                foreach ($comments as $comment) {
+                  $commentUser = $userObj->showUserByEmail($comment['commentOwnerUser']);
+                  echo '
+                  <li class="row clearfix" style="margin-top:20px">
+                  <div class="icon-box col-md-2 col-4"><img class="img-fluid img-thumbnail" src="data:image;base64,' . base64_encode($commentUser[0]['picture']) . '" alt="Awesome Image" style="width: 120px;;height:120px;"></div>
+                    <div class="text-box col-md-10 col-8 p-l-0 p-r0">
+                      <h5 class="m-b-0">' . $commentUser[0]['name'] . ' ' . $commentUser[0]['lastname1'] . ' ' . $commentUser[0]['lastname2'] . '</h5>
+                      <p>' . $comment['commentText'] . '</p>
+                      <small>' . $comment['commentDate'] . '</small>
+                    </div>
+                  </li>
+                  ';
+                  if (isset($_SESSION['email'])) {
+                  echo '<a href="noticiaespecifica.php?noticia=' . $idNoticia . '&responder=' . $comment['commentId'] . '" class="btn btn-primary" style="margin-top:20px">Responder</a>';
+                      $sessionUserInfo = $userObj->showUserByEmail($_SESSION['email']);
+                      if ($sessionUserInfo[0]['userType'] == 1 || $sessionUserInfo[0]['userEmail'] == $commentUser[0]['userEmail'] || $sessionUserInfo[0]['userEmail'] == $noticiaInfo[0]['creatorUser']) {
+                      echo '<a href="../includes/deleteComment.inc.php?noticia=' . $idNoticia . '&comentario=' . $comment['commentId'] . '" class="btn btn-danger" style="margin-top:20px;margin-left:10px">Eliminar</a>';
+                      }
+                  }
+                  $replyComments = $commentObj->showReplyByMainComment($comment['commentId']);
+                  foreach($replyComments as $replyComment){
+                      $replyCommentUser = $userObj->showUserByEmail($replyComment['commentOwnerUser']);
+                      echo '
+                      <li class="row clearfix" style="margin-left:150px;margin-top:20px">
+                      <div class="icon-box col-md-2 col-4"><img class="img-fluid img-thumbnail" src="data:image;base64,' . base64_encode($replyCommentUser[0]['picture']) . '" alt="Awesome Image" style="width: 120px;;height:120px;"></div>
+                        <div class="text-box col-md-10 col-8 p-l-0 p-r0">
+                          <h5 class="m-b-0">' . $replyCommentUser[0]['name'] . ' ' . $replyCommentUser[0]['lastname1'] . ' ' . $replyCommentUser[0]['lastname2'] . '</h5>
+                          <p>' . $replyComment['commentText'] . '</p>
+                          <small>' . $replyComment['commentDate'] . '</small>
+                        </div>
+                      </li>
+                      ';
+                      if (isset($_SESSION['email'])) {
+                              $sessionUserInfo = $userObj->showUserByEmail($_SESSION['email']);
+                              if ($sessionUserInfo[0]['userType'] == 1 || $sessionUserInfo[0]['userEmail'] == $replyCommentUser[0]['userEmail'] || $sessionUserInfo[0]['userEmail'] == $noticiaInfo[0]['creatorUser']) {
+                              echo '<a href="../includes/deleteComment.inc.php?noticia=' . $idNoticia . '&comentario=' . $replyComment['commentId'] . '" class="btn btn-danger" style="margin-top:20px;margin-left:165px">Eliminar</a>';
+                              }
+                          }
+                  }
+                }
+            }
+            ?>
             </ul>
           </div>
         </div>
@@ -282,9 +334,93 @@ if(isset($_GET['noticia'])){
 
         <br>
 
-        <div class=" card-deck">
+        <?php
+        $keyWords = $noticiaInfo[0]['keyWords'];
+        $keyWordsArray = explode(',', $keyWords);
+        //PRUEBA
+        // foreach($keyWordsArray as $keyWord){
+        //     echo ' ' . $keyWord . ' ';
+        // }
+        ?>
+        <h1 style="color:white">Noticias relacionadas</h1>
+        <div class="row clearfix">
+            <?php
+            foreach($keyWordsArray as $keyWord){
+                $noticiasObj = new NoticiasView;
+                $noticiasList = $noticiasObj->showNoticiasRelacionadas($idNoticia,$keyWord);
+                $catsObj = new NewsCatsView;
+                $seccionObj = new SeccionesView;
+                foreach ($noticiasList as $noticia) {
+                    $noticiaId = $noticia['newsId'];
+                    $newsImgObj = new NewsImgsView;
+                    $imagenesNoticia = $newsImgObj->showNewsImgByNews($noticiaId);
+                    $newsCats = $catsObj->showNewscatsByNews($noticiaId);
+                    $seccionesNoticia = [];
+                    $i=0;
+                    foreach($newsCats as $newsCat){
+                        $infoSeccion=$seccionObj->showSeccionById($newsCat['categoryRelation']);
+                        $nombreSeccion=$infoSeccion[0]['categoryName'];
+                        $seccionesNoticia[$i]=$nombreSeccion;
+                        $i++;
+                    }
+            ?>
+            <div class="card" style="width:31.33%;margin:1%">
+                <img src="data:image;base64,<?php echo base64_encode($imagenesNoticia[0]['imageFile']); ?>"
+                    class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title"> <?php echo $noticia['newsTitle']; ?> </h5>
+                    <p class="card-text"> <?php echo $noticia['newsDescription']; ?> </p>
+                </div>
+                <!--Botonsote-->
+                <a href="noticiaespecifica.php?noticia=<?php echo $noticia['newsId']; ?>" type="button" class="btn btn-primary">Ver Noticia</a>
+                <div class="modal fade" id="noticia4" tabindex="-1" aria-labelledby="exampleModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-scrollable">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                ...
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                <button type="button" class="btn btn-primary">Ver noticia</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--Botonsote-->
+                <div class="card-footer">
+                    <small class="text-muted">
+                    <?php
+                    $i=0;
+                    foreach($seccionesNoticia as $seccionNoticia){
+                        if($i==0){
+                            echo 'Sección: ' . $seccionNoticia;
+                        }
+                        else{
+                            echo ', ' . $seccionNoticia;
+                        }
+                        $i++;
+                    }
+                    ?>
+                    </small>
+                    <br>
+                    <small><?php echo $noticia['publishDate'] ?></small>
+                </div>
+            </div>
+            <?php   }
+                }
+            ?>
+        </div>
+
+        <!-- <div class=" card-deck" style="margin-bottom:30px">
             <div class="card">
-                <img src="..." class="card-img-top" alt="...">
+                <img src="https://www.conmishijos.com/uploads/educacion/testdeportesingles.jpg" class="card-img-top" alt="...">
                 <div class="card-body">
                     <h5 class="card-title">Card title</h5>
                     <p class="card-text">This is a wider
@@ -299,7 +435,7 @@ if(isset($_GET['noticia'])){
                 </div>
             </div>
             <div class="card">
-                <img src="..." class="card-img-top" alt="...">
+                <img src="https://www.conmishijos.com/uploads/educacion/testdeportesingles.jpg" class="card-img-top" alt="...">
                 <div class="card-body">
                     <h5 class="card-title">Card title</h5>
                     <p class="card-text">TThis is a wider
@@ -319,7 +455,7 @@ if(isset($_GET['noticia'])){
                 </div>
             </div>
             <div class="card">
-                <img src="..." class="card-img-top" alt="...">
+                <img src="https://www.conmishijos.com/uploads/educacion/testdeportesingles.jpg" class="card-img-top" alt="...">
                 <div class="card-body">
                     <h5 class="card-title">Card title</h5>
                     <p class="card-text">This is a wider
@@ -336,7 +472,10 @@ if(isset($_GET['noticia'])){
                         mins ago</small>
                 </div>
             </div>
-        </div>
+        </div> -->
+        <?php
+        }
+        ?>
     </div>
 
 

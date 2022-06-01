@@ -213,6 +213,90 @@ include_once '../includes/class-autoload.inc.php';  //Incluir clases automática
             </div>
         </div>
 
+        <div class="container">
+            <h1 style="color:white">Noticias más gustadas</h1>
+            <div class="row clearfix">
+                <?php
+                    $noticiasObj = new NoticiasView;
+                    $noticiasList = $noticiasObj->showNoticiasGustadas();
+                    $newsCatsObj = new NewsCatsView;
+                    $seccionObj = new SeccionesView;
+                    foreach ($noticiasList as $noticia) {
+                        $idNoticia = $noticia['newsId'];
+                        $newsImgObj = new NewsImgsView;
+                        $imagenesNoticia = $newsImgObj->showNewsImgByNews($idNoticia);
+                        $newsCats = $newsCatsObj->showNewscatsByNews($idNoticia);
+                        $seccionesNoticia = [];
+                        //echo count($seccionesNoticia);
+                        $i=0;
+                        //echo count($newsCats);
+                        //echo $newsCats[0]['newsRelation'];
+                        //echo count($imagenesNoticia);
+                        foreach($newsCats as $newsCat){
+                            $seccionInfo=$seccionObj->showSeccionById($newsCat['categoryRelation']);
+                            $nombreSeccion=$seccionInfo[0]['categoryName'];
+                            $seccionesNoticia[$i]=$nombreSeccion;
+                            //echo $idNoticia;
+                            //echo $nombreSeccion;
+                            //echo $i;
+                            $i++;
+                        }
+                ?>
+                <div class="card" style="width:31.33%;margin:1%">
+                    <img src="data:image;base64,<?php echo base64_encode($imagenesNoticia[0]['imageFile']); ?>"
+                        class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title"> <?php echo $noticia['newsTitle']; ?> </h5>
+                        <p class="card-text"> <?php echo $noticia['newsDescription']; ?> </p>
+                    </div>
+                    <!--Botonsote-->
+                    <a href="noticiaespecifica.php?noticia=<?php echo $noticia['newsId']; ?>" type="button" class="btn btn-primary">Ver Noticia</a>
+                    <div class="modal fade" id="noticia4" tabindex="-1" aria-labelledby="exampleModalLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-scrollable">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    ...
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                    <button type="button" class="btn btn-primary">Ver noticia</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--Botonsote-->
+                    <div class="card-footer">
+                        <small class="text-muted">
+
+                        <?php
+                        $i=0;
+                        foreach($seccionesNoticia as $seccionNoticia){
+                            if($i==0){
+                                echo 'Sección: ' . $seccionNoticia;
+                            }
+                            else{
+                                echo ', ' . $seccionNoticia;
+                            }
+                            $i++;
+                        }
+                        ?>
+
+                        </small>
+                        <br>
+                        <small><?php echo $noticia['publishDate'] ?></small>
+                    </div>
+                </div>
+                <?php } ?>
+            </div>
+        </div>
+
         <!--Aqui empiezan las secciones-->
         <?php
         $seccionObj = new SeccionesView;

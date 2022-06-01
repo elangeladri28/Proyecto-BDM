@@ -85,6 +85,16 @@ class Noticias extends Dbh
         return $results;
     }
 
+    protected function getNoticiasGustadas()
+    {
+
+        $sql = "CALL abcNoticia(?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->execute(["getLiked",0,0,0,0,0,0,0,0,0,0,0,0,0]);
+        $results = $stmt->fetchAll();
+        return $results;
+    }
+
     protected function getNoticiasTerminadas()
     {
 
@@ -141,6 +151,16 @@ class Noticias extends Dbh
         $sql = "CALL abcNoticia(?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
         $stmt = $this->connect()->prepare($sql);
         $stmt->execute(["getByCat",$categoryId,0,0,0,0,0,0,0,0,0,0,0,0]);
+        $results = $stmt->fetchAll();
+        return $results;
+    }
+
+    protected function getNoticiasRelacionadas($newsId, $keyWord)
+    {
+
+        $sql = "CALL abcNoticia(?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->execute(["getRel",$newsId,0,0,0,0,0,0,0,0,0,$keyWord,0,0]);
         $results = $stmt->fetchAll();
         return $results;
     }

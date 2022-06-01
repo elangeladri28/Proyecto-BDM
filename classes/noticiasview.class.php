@@ -24,6 +24,13 @@ class NoticiasView extends Noticias
         return $results;
     }
 
+    public function showNoticiasGustadas()
+    {
+        
+        $results = $this->getNoticiasGustadas();
+        return $results;
+    }
+
     public function showNoticiasTerminadas()
     {
         
@@ -63,6 +70,13 @@ class NoticiasView extends Noticias
     {
         
         $results = $this->getNoticiasPorSeccion($categoryId);
+        return $results;
+    }
+
+    public function showNoticiasRelacionadas($newsId, $keyWord)
+    {
+        
+        $results = $this->getNoticiasRelacionadas($newsId, $keyWord);
         return $results;
     }
 

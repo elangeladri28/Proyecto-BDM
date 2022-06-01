@@ -21,3 +21,32 @@ body{
        padding: 2em;
 }
 
+tr:nth-child(even) {
+        background-color: #f2f2f2;
+}
+
+tr:nth-child(odd) {
+        background-color: #ffffff;
+}
+    
+th {
+    background-color: #30bc86;
+    color: white;
+    text-align: left;
+    padding: 6px;
+    padding-right: 50px;
+}
+
+table {
+    border-collapse: collapse;
+    width:100%;
+}
+
+td:nth-child(1) {
+    background-color: #30a77b;
+    color: white;
+}
+
+td {
+    padding: 6px;
+}
