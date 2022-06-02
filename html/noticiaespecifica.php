@@ -49,7 +49,7 @@ if(isset($_GET['noticia'])){
         $(document).ready(function() {
             $(".like__btn").click(function(){
                 //console.log('SiEntraAlScript');
-                $("#like").load("../includes/manageLikes.inc.php",{
+                $("#like").load("../includes/managelikes.inc.php",{
                     noticia: <?php echo $idNoticia;?>,
                     usuario: <?php echo '"' . $_SESSION['email'] . '"';?>
                 });
