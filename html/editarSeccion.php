@@ -124,10 +124,71 @@ if (isset($_GET['seccionId'])) {
     </div>
   </div>
 
-  <div class="container">
+  <div class="row" style="margin-top: 40px">
+    <div class="col-lg-6">
+      <?php
+      if(isset($_GET['error']) && $_GET['error']=="edit"){
+      ?>
+      <h5>Asegúrate de que el orden o el nombre no estén ocupados por otra sección</h5>
+      <?php
+      }
+      if(isset($_GET['seccionId'])){
+      ?>
+      <form method="POST" action="../includes/editDeleteSeccion.inc.php?seccionId=<?php echo $_GET['seccionId'];?>" class="modal fade" id="deleteSeccion" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                  <div class="form-group">
+                      <p>¿Estás segur@ que quieres eliminar esta sección?</p>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary" name="deleteSeccionBtn">Eliminar sección</button>
+                </div>
+            </div>
+        </div>
+      </form>
+      <?php
+      }
+      if(isset($_GET['seccionId'])){
+      ?>
+      <form method="POST" action="../includes/editDeleteSeccion.inc.php?seccionId=<?php echo $_GET['seccionId'];?>" class="modal fade" id="editSeccion" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                  <form id="createSeccionForm" method="POST" action="../includes/editDeleteSeccion.inc.php<?php if (isset($_GET['seccionId'])) {echo "?seccionId=" . $seccionInfo[0]['categoryId'];} ?>" enctype="multipart/form-data">
+                    <h2 style="text-align: center;">Modificar o Eliminar Sección</h2>
+                    <div class="form-group">
+                      <label for="exampleFormControlInput1">Nombre de Sección:</label>
+                      <input type="text" class="form-control" id="exampleFormControlInput1" name="editSeccionName" value="<?php if (isset($_GET['seccionId'])) {echo $seccionInfo[0]['categoryName'];} ?>" required>
+                    </div>
+                    <div class="form-group">
+                      <label for="exampleFormControlInput1">Orden:</label>
+                      <input type="number" class="form-control" id="exampleFormControlInput1" name="editSeccionOrder" placeholder="0" value="<?php if (isset($_GET['seccionId'])) {echo $seccionInfo[0]['categoryOrder'];} ?>" required>
+                    </div>
+                    <div class="form-group">
+                      <label for="exampleFormControlFile1">Agrega una imagen:</label>
+                      <input type="color" class="form-control" id="exampleFormControlInput1" name="editSeccionColor" required>
+                    </div>
+                  </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary" name="editSeccionBtn">Editar sección</button>
+                </div>
+            </div>
+        </div>
+      </form>
+      <?php
+      }
+      ?>
+    </div>
+  </div>
 
+  <div class="container">
     <div class="row">
-      <div class="col-lg-6">
+      <div class="col-lg-12" >
         <?php
         if(isset($_GET['error']) && $_GET['error']=="create"){
         ?>
@@ -136,6 +197,27 @@ if (isset($_GET['seccionId'])) {
         }
         ?>
         <div class="alta-seccion">
+          <form id="createSeccionForm" method="POST" action="../includes/editDeleteSeccion.inc.php<?php if (isset($_GET['seccionId'])) {echo "?seccionId=" . $seccionInfo[0]['categoryId'];} ?>" enctype="multipart/form-data">
+            <h2 style="text-align: center;">Modificar o Eliminar Sección</h2>
+            <div class="form-group">
+              <label for="exampleFormControlInput1">Nombre de Sección:</label>
+              <input type="text" class="form-control" id="exampleFormControlInput1" name="editSeccionName" value="<?php if (isset($_GET['seccionId'])) {echo $seccionInfo[0]['categoryName'];} ?>" required>
+            </div>
+            <div class="form-group">
+              <label for="exampleFormControlInput1">Orden:</label>
+              <input type="number" class="form-control" id="exampleFormControlInput1" name="editSeccionOrder" placeholder="0" value="<?php if (isset($_GET['seccionId'])) {echo $seccionInfo[0]['categoryOrder'];} ?>" required>
+            </div>
+            <div class="form-group">
+              <label for="exampleFormControlFile1">Agrega una imagen:</label>
+              <input type="color" class="form-control" id="exampleFormControlInput1" name="editSeccionColor" required>
+            </div>
+            <div class="botonsillos">
+              <button type="submit" class="btn btn-warning" name="editSeccionBtn">Modificar</button>
+              <button type="button" class="btn btn-danger" name="deleteSeccionBtn" data-toggle="modal" data-target="#deleteSeccion">Eliminar</button>
+            </div>
+          </form>
+        </div>
+        <!-- <div class="alta-seccion">
           <form id="createSeccionForm" method="POST" action="../includes/createSeccion.inc.php" enctype="multipart/form-data">
             <h2 style="text-align: center;">Agregar Sección</h2>
             <div class="form-group">
@@ -152,134 +234,7 @@ if (isset($_GET['seccionId'])) {
             </div>
             <button type="submit" name="createSeccionBtn" class="btn btn-success btn-lg btn-block">Guardar</button>
           </form>
-        </div>
-      </div>
-
-
-      <div class="col-lg-6">
-        <div class="ver-seccion">
-          <h2 style="text-align: center;">Secciones</h2>
-          <!-- <div class="list-group-scrollable">
-                    <button type="button" class="list-group-item list-group-item-action active">
-                      Cras justo odio
-                    </button>
-                    <button type="button" class="list-group-item list-group-item-action">Dapibus ac facilisis in</button>
-                    <button type="button" class="list-group-item list-group-item-action">Morbi leo risus</button>
-                    <button type="button" class="list-group-item list-group-item-action">Porta ac consectetur ac</button>
-                    <button type="button" class="list-group-item list-group-item-action" disabled>Vestibulum at eros</button>
-
-                    <button type="button" class="list-group-item list-group-item-action">Dapibus ac facilisis in</button>
-                    <button type="button" class="list-group-item list-group-item-action">Morbi leo risus</button>
-                    <button type="button" class="list-group-item list-group-item-action">Porta ac consectetur ac</button>
-                    <button type="button" class="list-group-item list-group-item-action" disabled>Vestibulum at eros</button>
-                    <button type="button" class="list-group-item list-group-item-action">Dapibus ac facilisis in</button>
-                    <button type="button" class="list-group-item list-group-item-action">Morbi leo risus</button>
-                    <button type="button" class="list-group-item list-group-item-action">Porta ac consectetur ac</button>
-                    <button type="button" class="list-group-item list-group-item-action" disabled>Vestibulum at eros</button>
-                    <button type="button" class="list-group-item list-group-item-action">Dapibus ac facilisis in</button>
-                    <button type="button" class="list-group-item list-group-item-action">Morbi leo risus</button>
-                    <button type="button" class="list-group-item list-group-item-action">Porta ac consectetur ac</button>
-                    <button type="button" class="list-group-item list-group-item-action" disabled>Vestibulum at eros</button>
-                    <button type="button" class="list-group-item list-group-item-action">Dapibus ac facilisis in</button>
-                    <button type="button" class="list-group-item list-group-item-action">Morbi leo risus</button>
-                    <button type="button" class="list-group-item list-group-item-action">Porta ac consectetur ac</button>
-                    <button type="button" class="list-group-item list-group-item-action" disabled>Vestibulum at eros</button>
-                    <button type="button" class="list-group-item list-group-item-action">Dapibus ac facilisis in</button>
-                    <button type="button" class="list-group-item list-group-item-action">Morbi leo risus</button>
-                    <button type="button" class="list-group-item list-group-item-action">Porta ac consectetur ac</button>
-                    <button type="button" class="list-group-item list-group-item-action" disabled>Vestibulum at eros</button>
-
-                  </div> -->
-
-          <div class="panel panel-primary" id="result_panel">
-            <div class="panel-body">
-              <ul class="list-group">
-                <?php
-                $seccionesObj = new SeccionesView();
-                $seccionesList = $seccionesObj->showSecciones();
-                foreach ($seccionesList as $seccion) {
-                  echo '<li class="list-group-item"><strong>' . $seccion['categoryName'];
-                  echo '</strong>
-                        <div class="botonsillo">
-                          <a href="editarSeccion.php?seccionId=' . $seccion['categoryId'] . '" class="btn btn-info">Seleccionar Sección</a>
-                        </div>
-                      </li>';       //data-toggle="modal" data-target="#ModalModificarSeccion"
-                }
-                ?>
-                <!--<li class="list-group-item"><strong>Futbol
-                  </strong>
-                  <div class="botonsillos">
-                    <button type="button" class="btn btn-warning" data-toggle="modal"
-                      data-target="#ModalModificarSeccion">Modificar</button>
-                    <button type="button" class="btn btn-danger" data-toggle="modal"
-                      data-target="#ModalBorrarSeccion">Eliminar</button>
-                  </div>
-
-                </li>
-                <li class="list-group-item"><strong>Beisbol
-                  </strong>
-                  <div class="botonsillos">
-                    <button type="button" class="btn btn-warning" data-toggle="modal"
-                      data-target="#ModalModificarSeccion">Modificar</button>
-                    <button type="button" class="btn btn-danger" data-toggle="modal"
-                      data-target="#ModalBorrarSeccion">Eliminar</button>
-                  </div>
-
-                </li>
-                <li class="list-group-item"><strong>Basketball
-                  </strong>
-                  <div class="botonsillos">
-                    <button type="button" class="btn btn-warning" data-toggle="modal"
-                      data-target="#ModalModificarSeccion">Modificar</button>
-                    <button type="button" class="btn btn-danger" data-toggle="modal"
-                      data-target="#ModalBorrarSeccion">Eliminar</button>
-                  </div>
-
-                </li>
-                <li class="list-group-item"><strong>Deporte
-                  </strong>
-                  <div class="botonsillos">
-                    <button type="button" class="btn btn-warning" data-toggle="modal"
-                      data-target="#ModalModificarSeccion">Modificar</button>
-                    <button type="button" class="btn btn-danger" data-toggle="modal"
-                      data-target="#ModalBorrarSeccion">Eliminar</button>
-                  </div>
-
-                </li>
-                <li class="list-group-item"><strong>Deporte
-                  </strong>
-                  <div class="botonsillos">
-                    <button type="button" class="btn btn-warning" data-toggle="modal"
-                      data-target="#ModalModificarSeccion">Modificar</button>
-                    <button type="button" class="btn btn-danger" data-toggle="modal"
-                      data-target="#ModalBorrarSeccion">Eliminar</button>
-                  </div>
-
-                </li>
-                <li class="list-group-item"><strong>Deporte
-                  </strong>
-                  <div class="botonsillos">
-                    <button type="button" class="btn btn-warning" data-toggle="modal"
-                      data-target="#ModalModificarSeccion">Modificar</button>
-                    <button type="button" class="btn btn-danger" data-toggle="modal"
-                      data-target="#ModalBorrarSeccion">Eliminar</button>
-                  </div>
-
-                </li>
-                <li class="list-group-item"><strong>Deporte
-                  </strong>
-                  <div class="botonsillos">
-                    <button type="button" class="btn btn-warning" data-toggle="modal"
-                      data-target="#ModalModificarSeccion">Modificar</button>
-                    <button type="button" class="btn btn-danger" data-toggle="modal"
-                      data-target="#ModalBorrarSeccion">Eliminar</button>
-                  </div>
-
-                </li>-->
-              </ul>
-            </div>
-          </div>
-        </div>
+        </div> -->
       </div>
     </div>
     <div class="row" style="margin-top: 40px">
