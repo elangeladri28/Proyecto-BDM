@@ -126,6 +126,11 @@ elseif(isset($_POST['reporteSeccionesBtn'])){
         if($reporte[0]['numberOfComments']==''){
             $reporte[0]['numberOfComments']=0;
         }
+        if($reporte[0]['categoryName']==''){
+            $seccionObj = new SeccionesView;
+            $seccionInfo = $seccionObj->showSeccionById($repFiltroSeccion);
+            $reporte[0]['categoryName']=$seccionInfo[0]['categoryName'];
+        }
         // echo $reporte[0]['categoryName'] . '      ';
         // echo $reporte[0]['numberOfLikes'] . '      ';
         // echo $reporte[0]['numberOfComments'] . '      ';
@@ -154,8 +159,15 @@ elseif(isset($_POST['reporteSeccionesBtn'])){
         foreach($seccionesList as $seccion){
             $seccionId = $seccion['categoryId'];
             $reporteSeccion = $reportesObj->showReporteSeccion($repFechaDesde, $repFechaHasta, $seccionId);
-
-            $reportesSecciones[$seccionId]['categoryName']=$reporteSeccion[0]['categoryName'];
+            
+            if($reporteSeccion[0]['categoryName']==''){
+                $seccionObj = new SeccionesView;
+                $seccionInfo = $seccionObj->showSeccionById($seccionId);
+                $reportesSecciones[$seccionId]['categoryName']=$seccionInfo[0]['categoryName'];
+            }
+            else{
+                $reportesSecciones[$seccionId]['categoryName']=$reporteSeccion[0]['categoryName'];
+            }
 
 
             if($reporteSeccion[0]['numberOfLikes']!=''){
